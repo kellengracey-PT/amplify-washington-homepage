@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amplify Washington – Washington's Daily Community Show</title>
+  <meta name="description" content="Amplify Washington is Washington, Iowa's weekday community show — live every weekday. Local voices, events, shout-outs, and community participation." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Amplify Washington – Washington's Daily Community Show" />
+  <meta property="og:description" content="A weekday show built around Washington, Iowa — local voices, events, shout-outs, and the people who make this community what it is." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.amplify-washington.com" />
+
+  <!-- Google Fonts: Barlow Condensed (display/headlines) + Source Serif 4 (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — Black & Orange
+       ============================================================ */
+    :root {
+      --black: #111111;
+      --black-dark: #000000;
+      --black-light: #1e1e1e;
+      --orange: #E8610A;
+      --orange-dark: #c04d00;
+      --orange-light: #ff7a24;
+      --orange-pale: #fff0e6;
+      --orange-pale2: #fde8d5;
+      --white: #ffffff;
+      --off-white: #FAFAF8;
+      --bg: #F5F4F1;
+      --bg-white: #FFFFFF;
+      --text: #111111;
+      --text-muted: #555555;
+      --border: #d8d5cf;
+      --border-dark: #bbbbbb;
+      --radius: 6px;
+      --radius-lg: 12px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.10);
+      --shadow-md: 0 4px 24px rgba(0,0,0,0.14);
+      --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+      --font-body: 'Barlow', system-ui, sans-serif;
+      --font-serif: 'Source Serif 4', Georgia, serif;
+      --max-w: 1100px;
+      --section-pad: 5rem 1.5rem;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; }
+
+    /* ── SKIP LINK ── */
+    .skip-link { position: absolute; top: -40px; left: 1rem; background: var(--orange); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; font-weight: 700; z-index: 9999; transition: top 0.2s; }
+    .skip-link:focus { top: 0.5rem; }
+
+    /* ── CONTAINER ── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ── UTILITY ── */
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+
+    /* ============================================================
+       NAV
+       ============================================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--black);
+      border-bottom: 3px solid var(--orange);
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .nav-logo-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--orange);
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.03em;
+      line-height: 1;
+    }
+
+    .nav-logo-text span { color: var(--orange); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.18s;
+    }
+    .nav-links a:hover { color: var(--orange); }
+
+    .nav-social {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+      transition: background 0.18s, color 0.18s;
+    }
+    .nav-social a:hover { background: var(--orange); color: #fff; }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.25s; }
+
+    .nav-mobile-menu {
+      display: none;
+      background: var(--black-light);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-mobile-menu.open { display: block; }
+    .nav-mobile-menu a {
+      display: block;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: color 0.18s, background 0.18s;
+    }
+    .nav-mobile-menu a:hover { color: var(--orange); background: rgba(255,255,255,0.04); }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 1.5rem 4rem;
+    }
+
+    /* Diagonal orange accent stripe */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; right: -10%;
+      width: 55%;
+      height: 100%;
+      background: var(--orange);
+      clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    /* Heartbeat line decoration */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--orange);
+    }
+
+    .hero-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content { flex: 1; }
+
+    .hero-eyebrow {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 2px;
+      background: var(--orange);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title span {
+      color: var(--orange);
+      display: block;
+    }
+
+    .hero-desc {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all 0.18s;
+      text-decoration: none;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: #fff;
+      border-color: var(--orange);
+    }
+    .btn-primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255,255,255,0.35);
+    }
+    .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+
+    .btn-lg { padding: 1rem 2.25rem; font-size: 0.95rem; }
+
+    .hero-logo {
+      flex-shrink: 0;
+      width: 200px;
+    }
+
+    .hero-logo img {
+      width: 100%;
+      filter: drop-shadow(0 8px 32px rgba(232,97,10,0.35));
+    }
+
+    /* Live badge */
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--orange);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      background: #fff;
+      border-radius: 50%;
+      animation: livePulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* ============================================================
+       SECTION DEFAULTS
+       ============================================================ */
+    .section { padding: var(--section-pad); }
+    .section--white { background: var(--bg-white); }
+    .section--dark { background: var(--black); color: #fff; }
+    .section--orange { background: var(--orange); color: #fff; }
+    .section--stripe {
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--bg) 0px,
+        var(--bg) 8px,
+        var(--off-white) 8px,
+        var(--off-white) 16px
+      );
+    }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 2px;
+      background: var(--orange);
+    }
+    .section--dark .section-label { color: var(--orange); }
+    .section--orange .section-label { color: rgba(255,255,255,0.8); }
+    .section--orange .section-label::before { background: rgba(255,255,255,0.8); }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+    .section--dark .section-title { color: #fff; }
+    .section--orange .section-title { color: #fff; }
+
+    .section-intro {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+    .section--dark .section-intro { color: rgba(255,255,255,0.7); }
+    .section--orange .section-intro { color: rgba(255,255,255,0.88); }
+
+    /* ============================================================
+       ABOUT
+       ============================================================ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-body p {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-body strong { color: var(--text); }
+
+    .about-body .highlight {
+      border-left: 3px solid var(--orange);
+      padding-left: 1.25rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: var(--text);
+    }
+
+    .about-aside {
+      background: var(--black);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .about-aside-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      background: var(--black);
+      padding: 2rem;
+    }
+
+    .about-stats {
+      padding: 1.5rem;
+      border-top: 2px solid var(--orange);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .about-stat-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .about-stat-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-top: 0.2rem;
+    }
+
+    /* ============================================================
+       WATCH
+       ============================================================ */
+    .video-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      background: var(--black);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-md);
+      border: 2px solid rgba(232,97,10,0.3);
+    }
+
+    .video-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .watch-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .watch-episode-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+
+    .watch-episode-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .watch-episode-link {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--orange);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .watch-social {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* ============================================================
+       EVENTS
+       ============================================================ */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .event-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .event-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+    .event-card-accent {
+      height: 4px;
+      background: var(--orange);
+    }
+
+    .event-card-body { padding: 1.5rem; }
+
+    .event-card-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.5rem;
+    }
+
+    .event-card-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+    }
+
+    .event-card-detail {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       SUBMIT SEGMENTS
+       ============================================================ */
+    .submit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+    }
+
+    .submit-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--orange);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: box-shadow 0.18s, transform 0.18s;
+    }
+    .submit-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+    .submit-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .submit-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--text);
+    }
+
+    .submit-card p {
+      font-family: var(--font-serif);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .submit-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .submit-link {
+      display: block;
+      text-align: center;
+      padding: 0.55rem 0.85rem;
+      border-radius: var(--radius);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.18s;
+      text-decoration: none;
+    }
+
+    .submit-link--email {
+      background: var(--orange-pale);
+      color: var(--orange-dark);
+      border: 1px solid #f0c4a0;
+    }
+    .submit-link--email:hover { background: var(--orange); color: #fff; }
+
+    .submit-link--fb {
+      background: #e7f0fb;
+      color: #1877f2;
+      border: 1px solid #c0d5f5;
+    }
+    .submit-link--fb:hover { background: #1877f2; color: #fff; }
+
+    /* How it works */
+    .how-it-works {
+      background: var(--black);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.5rem;
+      color: #fff;
+    }
+
+    .how-it-works h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--orange);
+      margin-bottom: 1.25rem;
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .how-step { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .how-step-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .how-step-text {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       FAQ
+       ============================================================ */
+    .faq-list { display: flex; flex-direction: column; gap: 0; max-width: 760px; }
+
+    .faq-item { border-bottom: 1px solid var(--border); }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      background: none;
+      border: none;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-align: left;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      transition: color 0.18s;
+    }
+    .faq-question:hover { color: var(--orange); }
+
+    .faq-chevron { flex-shrink: 0; transition: transform 0.25s; color: var(--orange); }
+    .faq-question[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); }
+
+    .faq-answer {
+      display: none;
+      padding: 0 0 1.25rem;
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .faq-answer.open { display: block; }
+    .faq-answer a { color: var(--orange); text-decoration: underline; text-underline-offset: 2px; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      background: var(--black);
+      color: rgba(255,255,255,0.75);
+      padding: 3rem 1.5rem 2rem;
+      border-top: 3px solid var(--orange);
+    }
+
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-brand-name span { color: var(--orange); }
+
+    .footer-brand-sub {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .footer-brand-desc {
+      font-family: var(--font-serif);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .footer-col-title {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--orange); }
+
+    .footer-social {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.7);
+      transition: background 0.18s, color 0.18s;
+    }
+    .footer-social a:hover { background: var(--orange); color: #fff; }
+
+    .footer-bottom {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .footer-bottom a { color: var(--orange); }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .about-aside { max-width: 340px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      :root { --section-pad: 3.5rem 1.25rem; }
+      .nav-links, .nav-social { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero-inner { flex-direction: column-reverse; gap: 2rem; }
+      .hero-logo { width: 140px; }
+      .hero-title { font-size: clamp(2.5rem, 11vw, 4rem); }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ── NAV ── -->
+  <header>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="/" class="nav-logo" aria-label="Amplify Washington home">
+          <img src="Amp_Wash_Circle.png" alt="" class="nav-logo-img" aria-hidden="true">
+          <span class="nav-logo-text">AMPLIFY-<span>WASHINGTON</span></span>
+        </a>
+
+        <ul class="nav-links" role="list">
+          <li><a href="#about">About</a></li>
+          <li><a href="#watch">Watch</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#submit">Submit</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+
+        <div class="nav-social" aria-label="Social media links">
+          <!-- YouTube -->
+          <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+
+        <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <div class="nav-mobile-menu" id="mobile-menu" aria-hidden="true">
+        <a href="#about">About</a>
+        <a href="#watch">Watch</a>
+        <a href="#events">Events</a>
+        <a href="#submit">Submit</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- ── HERO ── -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="live-badge">
+            <span class="live-dot" aria-hidden="true"></span>
+            Live Weekdays
+          </div>
+          <h1 class="hero-title" id="hero-heading">
+            Washington's
+            <span>Daily Show.</span>
+          </h1>
+          <p class="hero-desc">
+            Amplify Washington goes live every weekday — local voices, community events, shout-outs, and the people who make Washington, Iowa what it is. Streaming live on YouTube and Facebook.
+          </p>
+          <div class="hero-actions">
+            <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+              Watch Live
+            </a>
+            <a href="#about" class="btn btn-outline btn-lg">Learn More</a>
+          </div>
+        </div>
+        <div class="hero-logo" aria-hidden="true">
+          <img src="Amp_Wash_Circle.png" alt="Amplify Washington logo">
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ABOUT ── -->
+    <section class="section section--white" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <p class="section-label">About the Show</p>
+        <h2 class="section-title" id="about-heading">Built for Washington</h2>
+
+        <div class="about-grid">
+          <div class="about-body">
+            <p>
+              Amplify Washington is a daily weekday community broadcast produced by <strong>HedgePost LLC</strong> — the same team behind Amplify MP in Mount Pleasant. We exist to give Washington, Iowa a dedicated voice: a place where local stories get told, local events get promoted, and local people get the spotlight they deserve.
+            </p>
+            <p>
+              Every weekday we go live to highlight what's happening in Washington and the surrounding area — from Washington Community School District athletics and activities, to Chamber of Commerce news, to the neighbors and businesses that make this community run.
+            </p>
+            <blockquote class="highlight">
+              Washington deserves a show that puts Washington first. That's exactly what we're building.
+            </blockquote>
+            <p>
+              We stream live on YouTube and Facebook, so you can watch from anywhere — your phone, your desk, or your TV. Can't catch it live? Every episode is available on replay anytime.
+            </p>
+            <p>
+              Amplify Washington is a <strong>HedgePost LLC</strong> production. HedgePost also operates Amplify MP in Mount Pleasant and covers sports across Southeast Iowa through MP Sports Livestream.
+            </p>
+          </div>
+
+          <aside class="about-aside" aria-label="Amplify Washington at a glance">
+            <img src="Wash_Amp_Stacked.png" alt="Amplify Washington" class="about-aside-img">
+            <div class="about-stats">
+              <div>
+                <div class="about-stat-value">5×</div>
+                <div class="about-stat-label">Per week</div>
+              </div>
+              <div>
+                <div class="about-stat-value">Live</div>
+                <div class="about-stat-label">Every weekday</div>
+              </div>
+              <div>
+                <div class="about-stat-value">Free</div>
+                <div class="about-stat-label">Always</div>
+              </div>
+              <div>
+                <div class="about-stat-value">Local</div>
+                <div class="about-stat-label">Washington, IA</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WATCH ── -->
+    <section class="section section--dark" id="watch" aria-labelledby="watch-heading">
+      <div class="container">
+        <p class="section-label">Watch &amp; Follow</p>
+        <h2 class="section-title" id="watch-heading">Catch the Show</h2>
+        <p class="section-intro">
+          Amplify Washington goes live every weekday. Catch up anytime on YouTube, or follow us on Facebook for clips and updates throughout the week.
+        </p>
+
+        <!-- Latest episode auto-populated from YouTube RSS -->
+        <div class="video-wrap" id="latest-video-wrap" role="region" aria-label="Latest episode">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#1a1a1a;">
+            <span style="color:rgba(255,255,255,0.3);font-size:0.9rem;">Loading latest episode…</span>
+          </div>
+        </div>
+
+        <div class="watch-meta" id="latest-episode-info"></div>
+
+        <div class="watch-social">
+          <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+            Watch on YouTube
+          </a>
+          <a href="https://www.facebook.com/AmplifyWashington" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            Follow on Facebook
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EVENTS ── -->
+    <section class="section" id="events" aria-labelledby="events-heading">
+      <div class="container">
+        <p class="section-label">What's Happening</p>
+        <h2 class="section-title" id="events-heading">Washington Events</h2>
+        <p class="section-intro">
+          From Washington Community School District activities to Chamber events and community gatherings — here's what's coming up in Washington and Washington County.
+        </p>
+
+        <div class="events-grid">
+          <div class="event-card">
+            <div class="event-card-accent"></div>
+            <div class="event-card-body">
+              <div class="event-card-label">Community Calendar</div>
+              <div class="event-card-title">Washington County Events</div>
+              <div class="event-card-detail">
+                Browse community events from the Washington Chamber of Commerce and local organizations. We feature upcoming events on the show each week.
+              </div>
+            </div>
+          </div>
+
+          <div class="event-card">
+            <div class="event-card-accent"></div>
+            <div class="event-card-body">
+              <div class="event-card-label">WCSD Athletics</div>
+              <div class="event-card-title">Warriors Sports</div>
+              <div class="event-card-detail">
+                Washington Community School District athletics — games, matches, and events across all sports and grade levels. Go Warriors.
+              </div>
+            </div>
+          </div>
+
+          <div class="event-card">
+            <div class="event-card-accent"></div>
+            <div class="event-card-body">
+              <div class="event-card-label">Amplify Events</div>
+              <div class="event-card-title">Live Events</div>
+              <div class="event-card-detail">
+                HedgePost produces live events in Southeast Iowa. Check back for upcoming shows, comedy nights, and community productions in Washington.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SUBMIT ── -->
+    <section class="section section--stripe" id="submit" aria-labelledby="submit-heading">
+      <div class="container">
+        <p class="section-label">Submit to the Show</p>
+        <h2 class="section-title" id="submit-heading">Be Part of Amplify Washington</h2>
+        <p class="section-intro">
+          Amplify Washington works best when the community is part of it. If you've got something to share, we'd love to see it. Send submissions by email or message us on Facebook.
+        </p>
+
+        <div class="submit-grid">
+
+          <!-- Critters -->
+          <div class="submit-card">
+            <div class="submit-icon" aria-hidden="true">🐾</div>
+            <h3>Critters of Washington</h3>
+            <p>
+              Got a great pet? We want to meet them. Send us a few photos, tell us a bit about them, and share any good stories — we'll feature favorites on the show.
+            </p>
+            <div class="submit-actions">
+              <a href="mailto:contact@amplify-washington.com?subject=Critters of Washington" class="submit-link submit-link--email">Send by Email</a>
+              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
+            </div>
+          </div>
+
+          <!-- Shout Outs -->
+          <div class="submit-card">
+            <div class="submit-icon" aria-hidden="true">🎉</div>
+            <h3>Shout Outs</h3>
+            <p>
+              Birthdays, anniversaries, promotions, big life events, or someone who deserves recognition. If it's worth shouting from the rooftops, it belongs here.
+            </p>
+            <div class="submit-actions">
+              <a href="mailto:contact@amplify-washington.com?subject=Shout Out" class="submit-link submit-link--email">Send by Email</a>
+              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
+            </div>
+          </div>
+
+          <!-- Take Washington With You -->
+          <div class="submit-card">
+            <div class="submit-icon" aria-hidden="true">📸</div>
+            <h3>Take Washington With You</h3>
+            <p>
+              Show us how far Washington travels. Go to our Facebook page, pull up our profile picture, hold your phone next to your face with our logo showing, and have someone snap a photo — wherever you are in the world.
+            </p>
+            <div class="submit-actions">
+              <a href="mailto:contact@amplify-washington.com?subject=Take Washington With You" class="submit-link submit-link--email">Send by Email</a>
+              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
+            </div>
+          </div>
+
+          <!-- Weekly Poll -->
+          <div class="submit-card">
+            <div class="submit-icon" aria-hidden="true">📊</div>
+            <h3>Weekly Poll</h3>
+            <p>
+              Got an idea for our weekly community poll? It can be serious, silly, or anything in between — as long as it's something Washington people would have opinions about.
+            </p>
+            <div class="submit-actions">
+              <a href="mailto:contact@amplify-washington.com?subject=Weekly Poll Idea" class="submit-link submit-link--email">Send by Email</a>
+              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
+            </div>
+          </div>
+
+          <!-- Why I Love Washington -->
+          <div class="submit-card">
+            <div class="submit-icon" aria-hidden="true">❤️</div>
+            <h3>Why I Love Washington</h3>
+            <p>
+              Tell us what makes Washington special to you — a place, a memory, a person, a tradition. Keep it to a sentence or two. We read favorites on the show.
+            </p>
+            <div class="submit-actions">
+              <a href="mailto:contact@amplify-washington.com?subject=Why I Love Washington" class="submit-link submit-link--email">Send by Email</a>
+              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
+            </div>
+          </div>
+
+          <!-- Suggest a Guest -->
+          <div class="submit-card">
+            <div class="submit-icon" aria-hidden="true">🎙️</div>
+            <h3>Suggest a Guest</h3>
+            <p>
+              Know someone doing something interesting in Washington? Send us their name, why they'd make a great guest, and their contact info if you have it. Include: who they are, what they do, and why Washington should know about them.
+            </p>
+            <div class="submit-actions">
+              <a href="mailto:contact@amplify-washington.com?subject=Guest Suggestion" class="submit-link submit-link--email">Send by Email</a>
+              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- How it works -->
+        <div class="how-it-works">
+          <h3>How Submissions Work</h3>
+          <div class="how-steps">
+            <div class="how-step">
+              <div class="how-step-num">01</div>
+              <div class="how-step-text">Send your submission by email or Facebook message.</div>
+            </div>
+            <div class="how-step">
+              <div class="how-step-num">02</div>
+              <div class="how-step-text">Our team reviews everything — we check every submission.</div>
+            </div>
+            <div class="how-step">
+              <div class="how-step-num">03</div>
+              <div class="how-step-text">Selected submissions get featured on an upcoming episode.</div>
+            </div>
+            <div class="how-step">
+              <div class="how-step-num">04</div>
+              <div class="how-step-text">We may edit for length or format. Not every submission can be used.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="section section--white" id="faq" aria-labelledby="faq-heading">
+      <div class="container">
+        <p class="section-label">Questions</p>
+        <h2 class="section-title" id="faq-heading">Frequently Asked Questions</h2>
+
+        <div class="faq-list" role="list">
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false">
+              What is Amplify Washington?
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="faq-answer">
+              A weekday community broadcast focused on Washington, Iowa and Washington County — local voices, events, shout-outs, and the people who make this community what it is. It's produced by HedgePost LLC, the same team behind Amplify MP in Mount Pleasant.
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false">
+              When does the show air?
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="faq-answer">
+              Every weekday. If you can't catch it live, you can watch the replay on YouTube anytime after.
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false">
+              Where can I watch?
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="faq-answer">
+              Live and on replay on YouTube. We also post clips and updates on our Facebook page throughout the week.
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false">
+              How do I submit something?
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="faq-answer">
+              Send it to <a href="mailto:contact@amplify-washington.com">contact@amplify-washington.com</a> or message us on our <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener">Facebook page</a>.
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false">
+              Will my submission definitely be featured?
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="faq-answer">
+              We review everything, but we can't guarantee every submission will be used. We may also edit submissions for length or format.
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false">
+              Is this connected to Amplify MP in Mount Pleasant?
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="faq-answer">
+              Yes — both are produced by HedgePost LLC, a Southeast Iowa video production and digital media company. Amplify Washington is its own show focused entirely on Washington and Washington County, while Amplify MP focuses on Mount Pleasant and Henry County. They're sister brands.
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false">
+              Can I suggest someone you should interview?
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="faq-answer">
+              Yes — send us their name, contact info if you have it, and why they'd be a great guest. See the "Suggest a Guest" card above for what to include.
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false">
+              How do I advertise or partner with Amplify Washington?
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="faq-answer">
+              Email us at <a href="mailto:contact@amplify-washington.com">contact@amplify-washington.com</a> with your business name and what you're looking for. We offer sponsorships, on-air mentions, social media promotion, and digital marketing services.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">AMPLIFY-<span>WASHINGTON</span></div>
+        <div class="footer-brand-sub">A HedgePost LLC Production</div>
+        <p class="footer-brand-desc">
+          Washington, Iowa's daily community broadcast. Live every weekday on YouTube and Facebook.
+        </p>
+        <div class="footer-social">
+          <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links" role="list">
+          <li><a href="#about">About the Show</a></li>
+          <li><a href="#watch">Watch</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#submit">Submit</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links" role="list">
+          <li><a href="mailto:contact@amplify-washington.com">contact@amplify-washington.com</a></li>
+          <li><a href="https://www.amplify-mp.com" target="_blank" rel="noopener">Amplify MP (Mount Pleasant)</a></li>
+          <li><a href="https://hedgepost.net" target="_blank" rel="noopener">HedgePost LLC</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 Amplify Washington &middot; HedgePost LLC &middot; Southeast Iowa</span>
+      <span>Built with care for Washington, Iowa</span>
+    </div>
+  </footer>
+
+  <script>
+    // ── HAMBURGER ──────────────────────────────────────────
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', function() {
+      var isOpen = mobileMenu.classList.contains('open');
+      mobileMenu.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', !isOpen);
+      mobileMenu.setAttribute('aria-hidden', isOpen);
+    });
+
+    // Close on nav link click
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    // ── FAQ ACCORDION ──────────────────────────────────────
+    document.querySelectorAll('.faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        // Close all
+        document.querySelectorAll('.faq-question').forEach(function(b) {
+          b.setAttribute('aria-expanded', 'false');
+          b.nextElementSibling.classList.remove('open');
+        });
+        // Toggle clicked
+        if (!expanded) {
+          btn.setAttribute('aria-expanded', 'true');
+          btn.nextElementSibling.classList.add('open');
+        }
+      });
+    });
+
+    // ── YOUTUBE RSS — latest episode ───────────────────────
+    // REPLACE CHANNEL_ID below with the real Amplify Washington channel ID
+    // Found in YouTube Studio → Settings → Channel → Advanced Settings
+    (async function loadLatestEpisode() {
+      var CHANNEL_ID = 'REPLACE_WITH_AMPLIFY_WASHINGTON_CHANNEL_ID';
+
+      // Placeholder until channel is live
+      if (CHANNEL_ID === 'REPLACE_WITH_AMPLIFY_WASHINGTON_CHANNEL_ID') {
+        var wrap = document.getElementById('latest-video-wrap');
+        wrap.innerHTML = '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1a1a1a;gap:1rem;">' +
+          '<svg width="48" height="48" viewBox="0 0 24 24" fill="#E8610A"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>' +
+          '<span style="color:rgba(255,255,255,0.4);font-size:0.9rem;">Episodes coming soon — subscribe on YouTube</span>' +
+          '</div>';
+        return;
+      }
+
+      try {
+        var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
+        var proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl);
+
+        var res  = await fetch(proxyUrl);
+        var data = await res.json();
+        var xml  = new DOMParser().parseFromString(data.contents, 'text/xml');
+
+        var entries = xml.querySelectorAll('entry');
+        if (!entries.length) return;
+
+        var latest  = entries[0];
+        var videoId = latest.querySelector('videoId') ? latest.querySelector('videoId').textContent
+                    : latest.querySelector('id').textContent.split(':').pop();
+        var title   = latest.querySelector('title') ? latest.querySelector('title').textContent : 'Latest Episode';
+        var pubDate = latest.querySelector('published') ? latest.querySelector('published').textContent : '';
+
+        if (!videoId) return;
+
+        var wrap = document.getElementById('latest-video-wrap');
+        wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '" title="' + title.replace(/"/g, '&quot;') + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+
+        var info = document.getElementById('latest-episode-info');
+        var date = pubDate ? new Date(pubDate).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) : '';
+        info.innerHTML =
+          '<span class="watch-episode-title">' + title + '</span>' +
+          (date ? '<span class="watch-episode-date">' + date + '</span>' : '') +
+          '<a href="https://youtu.be/' + videoId + '" target="_blank" rel="noopener" class="watch-episode-link">Watch on YouTube &rarr;</a>';
+
+      } catch (err) {
+        console.warn('Could not load latest episode:', err);
+      }
+    })();
+  </script>
+
+</body>
+</html>
