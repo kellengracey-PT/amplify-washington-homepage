@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amplify Washington – Washington's Daily Community Show</title>
-  <meta name="description" content="Amplify Washington is Washington, Iowa's weekday community show — live every weekday. Local voices, events, shout-outs, and community participation." />
+  <title>Amplify Washington | Community Show &amp; Demons Sports Livestream</title>
+  <meta name="description" content="Amplify Washington is Washington, Iowa's weekday community show, plus sports livestream coverage of the Washington Demons beginning September 2026. Watch live or catch replays on YouTube." />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Amplify Washington – Washington's Daily Community Show" />
-  <meta property="og:description" content="A weekday show built around Washington, Iowa — local voices, events, shout-outs, and the people who make this community what it is." />
+  <meta property="og:title" content="Amplify Washington | Community Show & Demons Sports Livestream" />
+  <meta property="og:description" content="Washington's weekday community show, plus livestream coverage of the Washington Demons beginning September 2026. Watch live or catch replays on YouTube." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.amplify-washington.com" />
 
@@ -16,6 +16,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Amplify Washington",
+    "url": "https://www.amplify-washington.com",
+    "logo": "https://www.amplify-washington.com/Amp_Wash_Circle.png",
+    "sameAs": [
+      "https://www.facebook.com/AmplifyWashington",
+      "https://www.youtube.com/@AmplifyWashington"
+    ]
+  }
+  </script>
 
   <style>
     /* ============================================================
@@ -202,7 +216,6 @@
       pointer-events: none;
     }
 
-    /* Heartbeat line decoration */
     .hero::after {
       content: '';
       position: absolute;
@@ -245,9 +258,9 @@
 
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-size: clamp(2.6rem, 6.5vw, 5rem);
       font-weight: 900;
-      line-height: 0.95;
+      line-height: 0.98;
       letter-spacing: -0.01em;
       color: #fff;
       margin-bottom: 1.5rem;
@@ -263,8 +276,23 @@
       font-size: 1.15rem;
       color: rgba(255,255,255,0.7);
       line-height: 1.7;
-      max-width: 520px;
-      margin-bottom: 2rem;
+      max-width: 540px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-meta {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      align-items: center;
+      background: var(--orange);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.75rem;
     }
 
     .hero-actions {
@@ -312,35 +340,6 @@
     .hero-logo img {
       width: 100%;
       filter: drop-shadow(0 8px 32px rgba(232,97,10,0.35));
-    }
-
-    /* Live badge */
-    .live-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--orange);
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      margin-bottom: 1.25rem;
-    }
-
-    .live-dot {
-      width: 7px;
-      height: 7px;
-      background: #fff;
-      border-radius: 50%;
-      animation: livePulse 1.4s ease-in-out infinite;
-    }
-
-    @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.7); }
     }
 
     /* ============================================================
@@ -475,7 +474,7 @@
     }
 
     /* ============================================================
-       WATCH
+       VIDEO EMBEDS (watch / archive / sports)
        ============================================================ */
     .video-wrap {
       position: relative;
@@ -488,7 +487,8 @@
       border: 2px solid rgba(232,97,10,0.3);
     }
 
-    .video-wrap iframe {
+    .video-wrap iframe,
+    .video-wrap .video-placeholder {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -496,12 +496,48 @@
       border: none;
     }
 
+    .video-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      text-align: center;
+      padding: 2rem;
+      color: #fff;
+    }
+    .video-placeholder svg { color: var(--orange); opacity: 0.85; }
+    .video-placeholder p {
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 320px;
+      line-height: 1.6;
+    }
+    .video-placeholder .btn { margin-top: 0.25rem; }
+
+    .watch-link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .watch-link-row .yt-direct-link {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--orange);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     .watch-meta {
       display: flex;
       align-items: baseline;
       gap: 1rem;
       flex-wrap: wrap;
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
     }
 
     .watch-episode-title {
@@ -517,14 +553,6 @@
       color: var(--text-muted);
     }
 
-    .watch-episode-link {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--orange);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
     .watch-social {
       display: flex;
       flex-wrap: wrap;
@@ -532,174 +560,124 @@
     }
 
     /* ============================================================
-       EVENTS
+       SPORTS
        ============================================================ */
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .event-card {
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .event-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-
-    .event-card-accent {
-      height: 4px;
-      background: var(--orange);
-    }
-
-    .event-card-body { padding: 1.5rem; }
-
-    .event-card-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 0.5rem;
-    }
-
-    .event-card-title {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--text);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-      line-height: 1.1;
-    }
-
-    .event-card-detail {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    /* ============================================================
-       SUBMIT SEGMENTS
-       ============================================================ */
-    .submit-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 3rem;
-    }
-
-    .submit-card {
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-top: 3px solid var(--orange);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem;
+    .sports-banner {
       display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      transition: box-shadow 0.18s, transform 0.18s;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid var(--orange);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
     }
-    .submit-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-
-    .submit-icon {
-      font-size: 2rem;
-      line-height: 1;
-    }
-
-    .submit-card h3 {
+    .sports-banner-icon { font-size: 1.75rem; line-height: 1; flex-shrink: 0; }
+    .sports-banner p {
       font-family: var(--font-display);
-      font-size: 1.1rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.02em;
-      color: var(--text);
+      color: #fff;
+      font-size: 1.05rem;
+      line-height: 1.4;
     }
-
-    .submit-card p {
-      font-family: var(--font-serif);
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      line-height: 1.65;
-      flex: 1;
-    }
-
-    .submit-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-top: 0.25rem;
-    }
-
-    .submit-link {
+    .sports-banner p span {
       display: block;
-      text-align: center;
-      padding: 0.55rem 0.85rem;
-      border-radius: var(--radius);
-      font-size: 0.78rem;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.65);
+      margin-top: 0.2rem;
+    }
+
+    .archive-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .archive-label-row h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .archive-season-badge {
+      display: inline-block;
+      background: var(--orange);
+      color: #fff;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      transition: all 0.18s;
-      text-decoration: none;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
     }
 
-    .submit-link--email {
-      background: var(--orange-pale);
-      color: var(--orange-dark);
-      border: 1px solid #f0c4a0;
-    }
-    .submit-link--email:hover { background: var(--orange); color: #fff; }
-
-    .submit-link--fb {
-      background: #e7f0fb;
-      color: #1877f2;
-      border: 1px solid #c0d5f5;
-    }
-    .submit-link--fb:hover { background: #1877f2; color: #fff; }
-
-    /* How it works */
-    .how-it-works {
-      background: var(--black);
-      border-radius: var(--radius-lg);
-      padding: 2rem 2.5rem;
-      color: #fff;
-    }
-
-    .how-it-works h3 {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--orange);
-      margin-bottom: 1.25rem;
-    }
-
-    .how-steps {
+    /* ============================================================
+       APP TEASER
+       ============================================================ */
+    .app-teaser {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: auto 1fr;
       gap: 1.5rem;
+      align-items: center;
+      background: var(--black);
+      border: 2px solid var(--orange);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 2rem;
     }
-
-    .how-step { display: flex; flex-direction: column; gap: 0.4rem; }
-
-    .how-step-num {
+    .app-teaser-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius);
+      background: var(--orange);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.6rem;
+    }
+    .app-teaser h3 {
       font-family: var(--font-display);
-      font-size: 2rem;
+      font-size: 1.4rem;
       font-weight: 900;
-      color: var(--orange);
-      line-height: 1;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .app-teaser p {
+      font-family: var(--font-serif);
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 600px;
+    }
+    .app-teaser .hero-actions { margin-top: 1.25rem; }
+    @media (max-width: 600px) {
+      .app-teaser { grid-template-columns: 1fr; text-align: center; }
+      .app-teaser-icon { margin: 0 auto; }
     }
 
-    .how-step-text {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.5;
+    /* ============================================================
+       COMPACT CONTACT CTA
+       ============================================================ */
+    .compact-cta {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      font-family: var(--font-serif);
+      font-size: 0.98rem;
+      color: rgba(255,255,255,0.75);
     }
+    .compact-cta a { color: var(--orange); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 
     /* ============================================================
        FAQ
@@ -741,6 +719,39 @@
     }
     .faq-answer.open { display: block; }
     .faq-answer a { color: var(--orange); text-decoration: underline; text-underline-offset: 2px; }
+
+    /* ============================================================
+       FOLLOW / CTA
+       ============================================================ */
+    .follow-section {
+      background: var(--orange);
+      color: #fff;
+      padding: 4rem 1.5rem;
+      text-align: center;
+    }
+    .follow-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .follow-section > .container > p {
+      font-family: var(--font-serif);
+      color: rgba(255,255,255,0.9);
+      font-size: 1.05rem;
+      margin-bottom: 1.75rem;
+    }
+    .follow-social {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .follow-social .btn-outline { border-color: rgba(255,255,255,0.6); }
+    .follow-social .btn-outline:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.15); }
 
     /* ============================================================
        FOOTER
@@ -855,10 +866,21 @@
       .nav-hamburger { display: flex; }
       .hero-inner { flex-direction: column-reverse; gap: 2rem; }
       .hero-logo { width: 140px; }
-      .hero-title { font-size: clamp(2.5rem, 11vw, 4rem); }
+      .hero-title { font-size: clamp(2.3rem, 11vw, 4rem); }
       .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
       .hero-actions { flex-direction: column; }
       .btn { width: 100%; justify-content: center; }
+      .sports-banner { flex-direction: column; text-align: center; }
+    }
+
+    /* Accessible focus for all interactive elements */
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
@@ -871,40 +893,38 @@
     <nav class="nav" aria-label="Main navigation">
       <div class="nav-inner">
         <a href="/" class="nav-logo" aria-label="Amplify Washington home">
-          <img src="Amp_Wash_Circle.png" alt="" class="nav-logo-img" aria-hidden="true">
+          <img src="Amp_Wash_Circle.png" alt="" class="nav-logo-img" aria-hidden="true" width="44" height="44">
           <span class="nav-logo-text">AMPLIFY-<span>WASHINGTON</span></span>
         </a>
 
         <ul class="nav-links" role="list">
-          <li><a href="#about">About</a></li>
           <li><a href="#watch">Watch</a></li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#submit">Submit</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#archive">Show Archive</a></li>
+          <li><a href="#sports">Sports</a></li>
+          <li><a href="#app">App</a></li>
+          <li><a href="#follow">Follow</a></li>
         </ul>
 
         <div class="nav-social" aria-label="Social media links">
-          <!-- YouTube -->
-          <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener" aria-label="YouTube">
+          <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener" aria-label="Watch Amplify Washington on YouTube">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
           </a>
-          <!-- Facebook -->
-          <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener" aria-label="Facebook">
+          <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener" aria-label="Follow Amplify Washington on Facebook">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
           </a>
         </div>
 
-        <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
           <span></span><span></span><span></span>
         </button>
       </div>
 
       <div class="nav-mobile-menu" id="mobile-menu" aria-hidden="true">
-        <a href="#about">About</a>
         <a href="#watch">Watch</a>
-        <a href="#events">Events</a>
-        <a href="#submit">Submit</a>
-        <a href="#faq">FAQ</a>
+        <a href="#archive">Show Archive</a>
+        <a href="#sports">Sports</a>
+        <a href="#app">App</a>
+        <a href="#follow">Follow</a>
         <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">YouTube</a>
         <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener">Facebook</a>
       </div>
@@ -917,27 +937,144 @@
     <section class="hero" aria-labelledby="hero-heading">
       <div class="hero-inner">
         <div class="hero-content">
-          <div class="live-badge">
-            <span class="live-dot" aria-hidden="true"></span>
-            Live Weekdays
-          </div>
+          <p class="hero-eyebrow">Washington, Iowa</p>
           <h1 class="hero-title" id="hero-heading">
             Washington's
-            <span>Daily Show.</span>
+            <span>Community Show.</span>
           </h1>
           <p class="hero-desc">
-            Amplify Washington goes live every weekday — local voices, community events, shout-outs, and the people who make Washington, Iowa what it is. Streaming live on YouTube and Facebook.
+            Amplify Washington is the weekday community show for Washington, Iowa — local voices, community news, and the people who make this town what it is. Coming this fall: livestream coverage of Washington Demons sports.
           </p>
+          <div class="hero-meta">
+            <span>Community show live every weekday</span>
+            <span>&middot;</span>
+            <span>Demons sports coverage begins September 2026</span>
+          </div>
           <div class="hero-actions">
-            <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            <a href="#watch" class="btn btn-primary btn-lg">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
-              Watch Live
+              Watch Now
             </a>
-            <a href="#about" class="btn btn-outline btn-lg">Learn More</a>
+            <a href="#sports" class="btn btn-outline btn-lg">Sports Coverage</a>
+            <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-outline btn-lg" target="_blank" rel="noopener">Subscribe on YouTube</a>
           </div>
         </div>
         <div class="hero-logo" aria-hidden="true">
-          <img src="Amp_Wash_Circle.png" alt="Amplify Washington logo">
+          <img src="Amp_Wash_Circle.png" alt="" width="200" height="200">
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WATCH ── -->
+    <section class="section section--dark" id="watch" aria-labelledby="watch-heading">
+      <div class="container">
+        <p class="section-label">Watch &amp; Follow</p>
+        <h2 class="section-title" id="watch-heading">Watch the Latest Episode</h2>
+        <p class="section-intro">
+          Amplify Washington's community show goes live every weekday. Catch the latest episode below, or watch live and on replay any time on YouTube.
+        </p>
+
+        <div class="video-wrap" id="latest-video-wrap" role="region" aria-label="Latest community show episode"></div>
+        <div class="watch-link-row">
+          <a class="yt-direct-link" id="latest-video-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Watch on YouTube &rarr;</a>
+        </div>
+
+        <div class="watch-social">
+          <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+            Watch or Subscribe on YouTube
+          </a>
+          <a href="https://www.facebook.com/AmplifyWashington" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            Follow on Facebook
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SHOW ARCHIVE ── -->
+    <section class="section" id="archive" aria-labelledby="archive-heading">
+      <div class="container">
+        <p class="section-label">Show Archive</p>
+        <h2 class="section-title" id="archive-heading">Recent Episodes</h2>
+        <p class="section-intro">
+          Browse recent community show episodes from the last 30 days. This archive is a curated YouTube playlist, so it always reflects the most recent shows.
+        </p>
+
+        <!--
+          The rolling ~30-day archive is controlled entirely by YouTube playlist
+          membership: add an episode to include it, remove it to retire it.
+          No episode data is hardcoded here.
+        -->
+        <div class="video-wrap" id="archive-video-wrap" role="region" aria-label="Recent episodes playlist"></div>
+        <div class="watch-link-row">
+          <a class="yt-direct-link" id="archive-video-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Open full playlist on YouTube &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SPORTS ── -->
+    <section class="section section--dark" id="sports" aria-labelledby="sports-heading">
+      <div class="container">
+        <p class="section-label">Demons Sports</p>
+        <h2 class="section-title" id="sports-heading">Washington Demons Sports Livestream</h2>
+        <p class="section-intro">
+          Live broadcasts and full replays of Washington Demons athletics, all in one place.
+        </p>
+
+        <div class="sports-banner" role="status">
+          <span class="sports-banner-icon" aria-hidden="true">🏆</span>
+          <p>Live sports coverage begins September 2026
+            <span>Live games and replays will appear on this page once the season starts. Follow YouTube or Facebook for schedule announcements.</span>
+          </p>
+        </div>
+
+        <div class="video-wrap" id="sports-live-wrap" role="region" aria-label="Washington Demons sports livestream broadcast"></div>
+        <div class="watch-link-row">
+          <a class="yt-direct-link" id="sports-live-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Follow for schedule updates &rarr;</a>
+        </div>
+
+        <div class="archive-label-row">
+          <h3>Season Archive</h3>
+          <span class="archive-season-badge" id="sports-season-badge">2026&ndash;27 Season</span>
+        </div>
+        <div class="video-wrap" id="sports-archive-wrap" role="region" aria-label="Washington Demons sports season archive"></div>
+        <div class="watch-link-row">
+          <a class="yt-direct-link" id="sports-archive-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Open sports archive on YouTube &rarr;</a>
+        </div>
+
+        <div class="watch-social">
+          <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+            Follow on YouTube
+          </a>
+          <a href="https://www.facebook.com/AmplifyWashington" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            Follow on Facebook
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── APP TEASER ── -->
+    <section class="section section--white" id="app" aria-labelledby="app-heading">
+      <div class="container">
+        <p class="section-label">Coming Soon</p>
+        <h2 class="section-title" id="app-heading">A Better Way to Watch Local Is Coming</h2>
+
+        <div class="app-teaser">
+          <div class="app-teaser-icon" aria-hidden="true">📱</div>
+          <div>
+            <h3>Amplify Media Platform</h3>
+            <p>
+              The Amplify Media Platform app launches in September 2026 — bringing daily shows, live sports, replays, and local updates together in one place.
+            </p>
+            <div class="hero-actions">
+              <!-- TODO: replace with the real app URL once the Amplify Media Platform launches -->
+              <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-primary" target="_blank" rel="noopener">Get Launch Updates on YouTube</a>
+              <a href="https://www.facebook.com/AmplifyWashington" class="btn btn-outline" style="color:var(--text);border-color:var(--border-dark);" target="_blank" rel="noopener">Get Launch Updates on Facebook</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -951,27 +1088,30 @@
         <div class="about-grid">
           <div class="about-body">
             <p>
-              Amplify Washington is a daily weekday community broadcast produced by <strong>HedgePost LLC</strong> — the same team behind Amplify MP in Mount Pleasant. We exist to give Washington, Iowa a dedicated voice: a place where local stories get told, local events get promoted, and local people get the spotlight they deserve.
+              Amplify Washington is a daily weekday community broadcast — a dedicated voice for Washington, Iowa. We exist to make sure local stories get told, local events get promoted, and local people get the spotlight they deserve.
             </p>
             <p>
-              Every weekday we go live to highlight what's happening in Washington and the surrounding area — from Washington Community School District athletics and activities, to Chamber of Commerce news, to the neighbors and businesses that make this community run.
+              Every weekday we go live to highlight what's happening in Washington — from Washington Community School District athletics and activities, to Chamber of Commerce news, to the neighbors and businesses that make this community run.
             </p>
             <blockquote class="highlight">
               Washington deserves a show that puts Washington first. That's exactly what we're building.
             </blockquote>
             <p>
-              We stream live on YouTube and Facebook, so you can watch from anywhere — your phone, your desk, or your TV. Can't catch it live? Every episode is available on replay anytime.
+              We stream live on YouTube and Facebook, so you can watch from anywhere — your phone, your desk, or your TV. Can't catch it live? Every episode stays in our <a href="#archive">Show Archive</a>.
             </p>
             <p>
-              Amplify Washington is a <strong>HedgePost LLC</strong> production. HedgePost also operates Amplify MP in Mount Pleasant and covers sports across Southeast Iowa through MP Sports Livestream.
+              Have a story idea? Message Amplify Washington on <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener">Facebook</a>.
+            </p>
+            <p style="font-size:0.9rem;">
+              Amplify Washington is a <strong>HedgePost LLC</strong> production.
             </p>
           </div>
 
           <aside class="about-aside" aria-label="Amplify Washington at a glance">
-            <img src="Wash_Amp_Stacked.png" alt="Amplify Washington" class="about-aside-img">
+            <img src="Wash_Amp_Stacked.png" alt="Amplify Washington" class="about-aside-img" width="340" height="340">
             <div class="about-stats">
               <div>
-                <div class="about-stat-value">5×</div>
+                <div class="about-stat-value">5&times;</div>
                 <div class="about-stat-label">Per week</div>
               </div>
               <div>
@@ -992,230 +1132,13 @@
       </div>
     </section>
 
-    <!-- ── WATCH ── -->
-    <section class="section section--dark" id="watch" aria-labelledby="watch-heading">
-      <div class="container">
-        <p class="section-label">Watch &amp; Follow</p>
-        <h2 class="section-title" id="watch-heading">Catch the Show</h2>
-        <p class="section-intro">
-          Amplify Washington goes live every weekday. Catch up anytime on YouTube, or follow us on Facebook for clips and updates throughout the week.
-        </p>
-
-        <!-- Latest episode auto-populated from YouTube RSS -->
-        <div class="video-wrap" id="latest-video-wrap" role="region" aria-label="Latest episode">
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#1a1a1a;">
-            <span style="color:rgba(255,255,255,0.3);font-size:0.9rem;">Loading latest episode…</span>
-          </div>
-        </div>
-
-        <div class="watch-meta" id="latest-episode-info"></div>
-
-        <div class="watch-social">
-          <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
-            Watch on YouTube
-          </a>
-          <a href="https://www.facebook.com/AmplifyWashington" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            Follow on Facebook
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── EVENTS ── -->
-    <section class="section" id="events" aria-labelledby="events-heading">
-      <div class="container">
-        <p class="section-label">What's Happening</p>
-        <h2 class="section-title" id="events-heading">Washington Events</h2>
-        <p class="section-intro">
-          From Washington Community School District activities to Chamber events and community gatherings — here's what's coming up in Washington and Washington County.
-        </p>
-
-        <div class="events-grid">
-          <div class="event-card">
-            <div class="event-card-accent"></div>
-            <div class="event-card-body">
-              <div class="event-card-label">Community Calendar</div>
-              <div class="event-card-title">Washington County Events</div>
-              <div class="event-card-detail">
-                Browse community events from the Washington Chamber of Commerce and local organizations. We feature upcoming events on the show each week.
-              </div>
-            </div>
-          </div>
-
-          <div class="event-card">
-            <div class="event-card-accent"></div>
-            <div class="event-card-body">
-              <div class="event-card-label">WCSD Athletics</div>
-              <div class="event-card-title">Warriors Sports</div>
-              <div class="event-card-detail">
-                Washington Community School District athletics — games, matches, and events across all sports and grade levels. Go Warriors.
-              </div>
-            </div>
-          </div>
-
-          <div class="event-card">
-            <div class="event-card-accent"></div>
-            <div class="event-card-body">
-              <div class="event-card-label">Amplify Events</div>
-              <div class="event-card-title">Live Events</div>
-              <div class="event-card-detail">
-                HedgePost produces live events in Southeast Iowa. Check back for upcoming shows, comedy nights, and community productions in Washington.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── SUBMIT ── -->
-    <section class="section section--stripe" id="submit" aria-labelledby="submit-heading">
-      <div class="container">
-        <p class="section-label">Submit to the Show</p>
-        <h2 class="section-title" id="submit-heading">Be Part of Amplify Washington</h2>
-        <p class="section-intro">
-          Amplify Washington works best when the community is part of it. If you've got something to share, we'd love to see it. Send submissions by email or message us on Facebook.
-        </p>
-
-        <div class="submit-grid">
-
-          <!-- Critters -->
-          <div class="submit-card">
-            <div class="submit-icon" aria-hidden="true">🐾</div>
-            <h3>Critters of Washington</h3>
-            <p>
-              Got a great pet? We want to meet them. Send us a few photos, tell us a bit about them, and share any good stories — we'll feature favorites on the show.
-            </p>
-            <div class="submit-actions">
-              <a href="mailto:contact@amplify-washington.com?subject=Critters of Washington" class="submit-link submit-link--email">Send by Email</a>
-              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
-            </div>
-          </div>
-
-          <!-- Shout Outs -->
-          <div class="submit-card">
-            <div class="submit-icon" aria-hidden="true">🎉</div>
-            <h3>Shout Outs</h3>
-            <p>
-              Birthdays, anniversaries, promotions, big life events, or someone who deserves recognition. If it's worth shouting from the rooftops, it belongs here.
-            </p>
-            <div class="submit-actions">
-              <a href="mailto:contact@amplify-washington.com?subject=Shout Out" class="submit-link submit-link--email">Send by Email</a>
-              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
-            </div>
-          </div>
-
-          <!-- Take Washington With You -->
-          <div class="submit-card">
-            <div class="submit-icon" aria-hidden="true">📸</div>
-            <h3>Take Washington With You</h3>
-            <p>
-              Show us how far Washington travels. Go to our Facebook page, pull up our profile picture, hold your phone next to your face with our logo showing, and have someone snap a photo — wherever you are in the world.
-            </p>
-            <div class="submit-actions">
-              <a href="mailto:contact@amplify-washington.com?subject=Take Washington With You" class="submit-link submit-link--email">Send by Email</a>
-              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
-            </div>
-          </div>
-
-          <!-- Weekly Poll -->
-          <div class="submit-card">
-            <div class="submit-icon" aria-hidden="true">📊</div>
-            <h3>Weekly Poll</h3>
-            <p>
-              Got an idea for our weekly community poll? It can be serious, silly, or anything in between — as long as it's something Washington people would have opinions about.
-            </p>
-            <div class="submit-actions">
-              <a href="mailto:contact@amplify-washington.com?subject=Weekly Poll Idea" class="submit-link submit-link--email">Send by Email</a>
-              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
-            </div>
-          </div>
-
-          <!-- Why I Love Washington -->
-          <div class="submit-card">
-            <div class="submit-icon" aria-hidden="true">❤️</div>
-            <h3>Why I Love Washington</h3>
-            <p>
-              Tell us what makes Washington special to you — a place, a memory, a person, a tradition. Keep it to a sentence or two. We read favorites on the show.
-            </p>
-            <div class="submit-actions">
-              <a href="mailto:contact@amplify-washington.com?subject=Why I Love Washington" class="submit-link submit-link--email">Send by Email</a>
-              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
-            </div>
-          </div>
-
-          <!-- Suggest a Guest -->
-          <div class="submit-card">
-            <div class="submit-icon" aria-hidden="true">🎙️</div>
-            <h3>Suggest a Guest</h3>
-            <p>
-              Know someone doing something interesting in Washington? Send us their name, why they'd make a great guest, and their contact info if you have it. Include: who they are, what they do, and why Washington should know about them.
-            </p>
-            <div class="submit-actions">
-              <a href="mailto:contact@amplify-washington.com?subject=Guest Suggestion" class="submit-link submit-link--email">Send by Email</a>
-              <a href="https://www.facebook.com/AmplifyWashington" class="submit-link submit-link--fb" target="_blank" rel="noopener">Send on Facebook</a>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- How it works -->
-        <div class="how-it-works">
-          <h3>How Submissions Work</h3>
-          <div class="how-steps">
-            <div class="how-step">
-              <div class="how-step-num">01</div>
-              <div class="how-step-text">Send your submission by email or Facebook message.</div>
-            </div>
-            <div class="how-step">
-              <div class="how-step-num">02</div>
-              <div class="how-step-text">Our team reviews everything — we check every submission.</div>
-            </div>
-            <div class="how-step">
-              <div class="how-step-num">03</div>
-              <div class="how-step-text">Selected submissions get featured on an upcoming episode.</div>
-            </div>
-            <div class="how-step">
-              <div class="how-step-num">04</div>
-              <div class="how-step-text">We may edit for length or format. Not every submission can be used.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ── FAQ ── -->
-    <section class="section section--white" id="faq" aria-labelledby="faq-heading">
+    <section class="section" id="faq" aria-labelledby="faq-heading">
       <div class="container">
         <p class="section-label">Questions</p>
         <h2 class="section-title" id="faq-heading">Frequently Asked Questions</h2>
 
         <div class="faq-list" role="list">
-
-          <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              What is Amplify Washington?
-              <span class="faq-chevron" aria-hidden="true">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </span>
-            </button>
-            <div class="faq-answer">
-              A weekday community broadcast focused on Washington, Iowa and Washington County — local voices, events, shout-outs, and the people who make this community what it is. It's produced by HedgePost LLC, the same team behind Amplify MP in Mount Pleasant.
-            </div>
-          </div>
-
-          <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              When does the show air?
-              <span class="faq-chevron" aria-hidden="true">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </span>
-            </button>
-            <div class="faq-answer">
-              Every weekday. If you can't catch it live, you can watch the replay on YouTube anytime after.
-            </div>
-          </div>
 
           <div class="faq-item" role="listitem">
             <button class="faq-question" aria-expanded="false">
@@ -1225,67 +1148,31 @@
               </span>
             </button>
             <div class="faq-answer">
-              Live and on replay on YouTube. We also post clips and updates on our Facebook page throughout the week.
+              Live and on replay on <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">YouTube</a>. We also post clips and updates on our <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener">Facebook page</a> throughout the week.
             </div>
           </div>
 
           <div class="faq-item" role="listitem">
             <button class="faq-question" aria-expanded="false">
-              How do I submit something?
+              When is the community show available?
               <span class="faq-chevron" aria-hidden="true">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </span>
             </button>
             <div class="faq-answer">
-              Send it to <a href="mailto:contact@amplify-washington.com">contact@amplify-washington.com</a> or message us on our <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener">Facebook page</a>.
+              Live every weekday. If you can't catch it live, the replay is available on YouTube afterward, and recent episodes stay in the <a href="#archive">Show Archive</a>.
             </div>
           </div>
 
           <div class="faq-item" role="listitem">
             <button class="faq-question" aria-expanded="false">
-              Will my submission definitely be featured?
+              When does sports coverage begin?
               <span class="faq-chevron" aria-hidden="true">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </span>
             </button>
             <div class="faq-answer">
-              We review everything, but we can't guarantee every submission will be used. We may also edit submissions for length or format.
-            </div>
-          </div>
-
-          <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              Is this connected to Amplify MP in Mount Pleasant?
-              <span class="faq-chevron" aria-hidden="true">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </span>
-            </button>
-            <div class="faq-answer">
-              Yes — both are produced by HedgePost LLC, a Southeast Iowa video production and digital media company. Amplify Washington is its own show focused entirely on Washington and Washington County, while Amplify MP focuses on Mount Pleasant and Henry County. They're sister brands.
-            </div>
-          </div>
-
-          <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              Can I suggest someone you should interview?
-              <span class="faq-chevron" aria-hidden="true">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </span>
-            </button>
-            <div class="faq-answer">
-              Yes — send us their name, contact info if you have it, and why they'd be a great guest. See the "Suggest a Guest" card above for what to include.
-            </div>
-          </div>
-
-          <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              How do I advertise or partner with Amplify Washington?
-              <span class="faq-chevron" aria-hidden="true">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </span>
-            </button>
-            <div class="faq-answer">
-              Email us at <a href="mailto:contact@amplify-washington.com">contact@amplify-washington.com</a> with your business name and what you're looking for. We offer sponsorships, on-air mentions, social media promotion, and digital marketing services.
+              Livestream coverage of Washington Demons sports begins in September 2026. Follow us on <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">YouTube</a> or <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener">Facebook</a> for schedule announcements.
             </div>
           </div>
 
@@ -1295,6 +1182,27 @@
 
   </main>
 
+  <!-- ── FOLLOW / CTA ── -->
+  <section class="follow-section" id="follow" aria-labelledby="follow-heading">
+    <div class="container">
+      <h2 id="follow-heading">Follow Amplify Washington</h2>
+      <p>Watch, replay, and get schedule updates — all from the channels below.</p>
+      <div class="follow-social">
+        <a href="https://www.youtube.com/@AmplifyWashington" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+          Watch on YouTube
+        </a>
+        <a href="https://www.facebook.com/AmplifyWashington" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Follow on Facebook
+        </a>
+      </div>
+      <p class="compact-cta">
+        Have a story idea? Message Amplify Washington on <a href="https://www.facebook.com/AmplifyWashington" target="_blank" rel="noopener">Facebook</a>.
+      </p>
+    </div>
+  </section>
+
   <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="footer-inner">
@@ -1302,7 +1210,7 @@
         <div class="footer-brand-name">AMPLIFY-<span>WASHINGTON</span></div>
         <div class="footer-brand-sub">A HedgePost LLC Production</div>
         <p class="footer-brand-desc">
-          Washington, Iowa's daily community broadcast. Live every weekday on YouTube and Facebook.
+          Washington, Iowa's weekday community show, plus Demons sports livestream coverage beginning September 2026.
         </p>
         <div class="footer-social">
           <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener" aria-label="YouTube">
@@ -1317,11 +1225,11 @@
       <div>
         <div class="footer-col-title">Navigate</div>
         <ul class="footer-links" role="list">
-          <li><a href="#about">About the Show</a></li>
           <li><a href="#watch">Watch</a></li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#submit">Submit</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#archive">Show Archive</a></li>
+          <li><a href="#sports">Sports</a></li>
+          <li><a href="#app">App</a></li>
+          <li><a href="#about">About</a></li>
         </ul>
       </div>
 
@@ -1329,19 +1237,44 @@
         <div class="footer-col-title">Contact</div>
         <ul class="footer-links" role="list">
           <li><a href="mailto:contact@amplify-washington.com">contact@amplify-washington.com</a></li>
-          <li><a href="https://www.amplify-mp.com" target="_blank" rel="noopener">Amplify MP (Mount Pleasant)</a></li>
           <li><a href="https://hedgepost.net" target="_blank" rel="noopener">HedgePost LLC</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span>&copy; 2026 Amplify Washington &middot; HedgePost LLC &middot; Southeast Iowa</span>
-      <span>Built with care for Washington, Iowa</span>
+      <span>&copy; <span id="year"></span> Amplify Washington &middot; HedgePost LLC &middot; Washington, Iowa</span>
     </div>
   </footer>
 
   <script>
+    // ── Central configuration ────────────────────────────────────
+    // Update these values as real IDs/URLs become available. Blank
+    // values render a designed empty state instead of a broken embed.
+    const SITE_CONFIG = {
+      youtubeChannelUrl: "https://www.youtube.com/@AmplifyWashington",
+      facebookUrl: "https://www.facebook.com/AmplifyWashington",
+
+      // TODO: set to the current community-show episode's YouTube video ID
+      latestDailyShowVideoId: "",
+      // TODO: set to a YouTube playlist ID curated as a rolling ~30-day archive
+      dailyShowPlaylistId: "",
+
+      // TODO: confirm whether Washington Demons sports coverage uses this channel or a dedicated one
+      sportsChannelUrl: "",
+      // TODO: set once a sports broadcast is live
+      sportsLiveVideoId: "",
+      // TODO: set to the 2026–27 sports season playlist ID once created
+      sportsPlaylistId: "",
+      sportsSeasonLabel: "2026–27 Season",
+      sportsLaunchText: "Live sports coverage begins September 2026",
+
+      // TODO: set once the Amplify Media Platform app has a public URL
+      appUrl: ""
+    };
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
     // ── HAMBURGER ──────────────────────────────────────────
     var hamburger = document.getElementById('hamburger');
     var mobileMenu = document.getElementById('mobile-menu');
@@ -1353,7 +1286,6 @@
       mobileMenu.setAttribute('aria-hidden', isOpen);
     });
 
-    // Close on nav link click
     mobileMenu.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() {
         mobileMenu.classList.remove('open');
@@ -1366,12 +1298,10 @@
     document.querySelectorAll('.faq-question').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var expanded = btn.getAttribute('aria-expanded') === 'true';
-        // Close all
         document.querySelectorAll('.faq-question').forEach(function(b) {
           b.setAttribute('aria-expanded', 'false');
           b.nextElementSibling.classList.remove('open');
         });
-        // Toggle clicked
         if (!expanded) {
           btn.setAttribute('aria-expanded', 'true');
           btn.nextElementSibling.classList.add('open');
@@ -1379,55 +1309,105 @@
       });
     });
 
-    // ── YOUTUBE RSS — latest episode ───────────────────────
-    // REPLACE CHANNEL_ID below with the real Amplify Washington channel ID
-    // Found in YouTube Studio → Settings → Channel → Advanced Settings
-    (async function loadLatestEpisode() {
-      var CHANNEL_ID = 'UCGH6_E_jh9VIlsSKnwpvirQ';
+    // ── Smooth scroll offset for sticky nav ────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (href === '#') return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        var navHeight = document.querySelector('.nav').offsetHeight;
+        var top = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      });
+    });
 
-      // Placeholder until channel is live
-      if (CHANNEL_ID === 'UCGH6_E_jh9VIlsSKnwpvirQ') {
-        var wrap = document.getElementById('latest-video-wrap');
-        wrap.innerHTML = '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1a1a1a;gap:1rem;">' +
-          '<svg width="48" height="48" viewBox="0 0 24 24" fill="#E8610A"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.4 2.8 12 2.8 12 2.8s-4.4 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.6 12 21.6 12 21.6s4.4 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>' +
-          '<span style="color:rgba(255,255,255,0.4);font-size:0.9rem;">Episodes coming soon — subscribe on YouTube</span>' +
-          '</div>';
-        return;
+    // ── Official YouTube embed helpers (no API key, no scraping) ─
+    function escapeAttr(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    }
+
+    function emptyStateHTML(message, linkText, linkUrl) {
+      var link = linkUrl
+        ? '<a class="btn btn-primary" href="' + escapeAttr(linkUrl) + '" target="_blank" rel="noopener">' + linkText + '</a>'
+        : '';
+      return '' +
+        '<div class="video-placeholder">' +
+          '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><polygon points="10 9 15 12 10 15 10 9" fill="currentColor" stroke="none"/></svg>' +
+          '<p>' + message + '</p>' +
+          link +
+        '</div>';
+    }
+
+    function mountVideo(wrapId, linkId, videoId, title, eager, fallbackMessage, fallbackLinkText, fallbackLinkUrl) {
+      var wrap = document.getElementById(wrapId);
+      var link = linkId ? document.getElementById(linkId) : null;
+      if (videoId) {
+        wrap.innerHTML = '<iframe' +
+            ' src="https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?rel=0&playsinline=1"' +
+            ' title="' + escapeAttr(title) + '"' +
+            ' loading="' + (eager ? 'eager' : 'lazy') + '"' +
+            ' referrerpolicy="strict-origin-when-cross-origin"' +
+            ' allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
+            ' allowfullscreen></iframe>';
+        if (link) link.href = 'https://youtu.be/' + encodeURIComponent(videoId);
+      } else {
+        wrap.innerHTML = emptyStateHTML(fallbackMessage, fallbackLinkText, fallbackLinkUrl);
+        if (link) link.href = fallbackLinkUrl;
       }
+    }
 
-      try {
-        var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
-        var proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl);
-
-        var res  = await fetch(proxyUrl);
-        var data = await res.json();
-        var xml  = new DOMParser().parseFromString(data.contents, 'text/xml');
-
-        var entries = xml.querySelectorAll('entry');
-        if (!entries.length) return;
-
-        var latest  = entries[0];
-        var videoId = latest.querySelector('videoId') ? latest.querySelector('videoId').textContent
-                    : latest.querySelector('id').textContent.split(':').pop();
-        var title   = latest.querySelector('title') ? latest.querySelector('title').textContent : 'Latest Episode';
-        var pubDate = latest.querySelector('published') ? latest.querySelector('published').textContent : '';
-
-        if (!videoId) return;
-
-        var wrap = document.getElementById('latest-video-wrap');
-        wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '" title="' + title.replace(/"/g, '&quot;') + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-
-        var info = document.getElementById('latest-episode-info');
-        var date = pubDate ? new Date(pubDate).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) : '';
-        info.innerHTML =
-          '<span class="watch-episode-title">' + title + '</span>' +
-          (date ? '<span class="watch-episode-date">' + date + '</span>' : '') +
-          '<a href="https://youtu.be/' + videoId + '" target="_blank" rel="noopener" class="watch-episode-link">Watch on YouTube &rarr;</a>';
-
-      } catch (err) {
-        console.warn('Could not load latest episode:', err);
+    function mountPlaylist(wrapId, linkId, playlistId, title, fallbackMessage, fallbackLinkText, fallbackLinkUrl) {
+      var wrap = document.getElementById(wrapId);
+      var link = linkId ? document.getElementById(linkId) : null;
+      if (playlistId) {
+        wrap.innerHTML = '<iframe' +
+            ' src="https://www.youtube.com/embed/videoseries?list=' + encodeURIComponent(playlistId) + '&rel=0&playsinline=1"' +
+            ' title="' + escapeAttr(title) + '"' +
+            ' loading="lazy"' +
+            ' referrerpolicy="strict-origin-when-cross-origin"' +
+            ' allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
+            ' allowfullscreen></iframe>';
+        if (link) link.href = 'https://www.youtube.com/playlist?list=' + encodeURIComponent(playlistId);
+      } else {
+        wrap.innerHTML = emptyStateHTML(fallbackMessage, fallbackLinkText, fallbackLinkUrl);
+        if (link) link.href = fallbackLinkUrl;
       }
-    })();
+    }
+
+    // Latest community-show episode (eager: it's the primary above-the-fold player)
+    mountVideo(
+      'latest-video-wrap', 'latest-video-link',
+      SITE_CONFIG.latestDailyShowVideoId, 'Latest Amplify Washington community show episode', true,
+      'The latest episode will appear here soon. Watch live every weekday, or catch replays on YouTube.',
+      'Watch on YouTube', SITE_CONFIG.youtubeChannelUrl
+    );
+
+    // Rolling ~30-day show archive playlist
+    mountPlaylist(
+      'archive-video-wrap', 'archive-video-link',
+      SITE_CONFIG.dailyShowPlaylistId, 'Amplify Washington recent episodes playlist',
+      'Recent episodes will appear here once the archive playlist is set up. In the meantime, browse the full history on our YouTube channel.',
+      'Visit YouTube Channel', SITE_CONFIG.youtubeChannelUrl
+    );
+
+    // Sports live broadcast
+    mountVideo(
+      'sports-live-wrap', 'sports-live-link',
+      SITE_CONFIG.sportsLiveVideoId, 'Washington Demons sports livestream broadcast', false,
+      SITE_CONFIG.sportsLaunchText + '. Live games and replays will appear here once the season starts.',
+      'Follow for Schedule Updates', SITE_CONFIG.sportsChannelUrl || SITE_CONFIG.youtubeChannelUrl
+    );
+
+    // Sports season archive playlist
+    document.getElementById('sports-season-badge').textContent = SITE_CONFIG.sportsSeasonLabel;
+    mountPlaylist(
+      'sports-archive-wrap', 'sports-archive-link',
+      SITE_CONFIG.sportsPlaylistId, 'Washington Demons sports ' + SITE_CONFIG.sportsSeasonLabel + ' archive',
+      'The ' + SITE_CONFIG.sportsSeasonLabel + ' game archive will appear here once coverage begins in September 2026.',
+      'Follow for Schedule Updates', SITE_CONFIG.sportsChannelUrl || SITE_CONFIG.youtubeChannelUrl
+    );
   </script>
 
 </body>
