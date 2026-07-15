@@ -532,31 +532,85 @@
       text-underline-offset: 2px;
     }
 
-    .watch-meta {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.5rem;
-    }
-
-    .watch-episode-title {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text);
-      text-transform: uppercase;
-    }
-
-    .watch-episode-date {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
     .watch-social {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
+    }
+
+    /* Live & Latest status row — badge text/state is set entirely by JS
+       after real data is available. Never ships "Live Now" in the raw HTML. */
+    .watch-status-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .watch-status-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid var(--orange);
+      color: rgba(255,255,255,0.85);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+    }
+    .watch-status-badge.is-live {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+    .watch-status-meta {
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* Recent episodes — thumbnail cards, one shared player, no extra iframes */
+    .recent-episodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .recent-episode-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      padding: 0;
+      transition: box-shadow 0.18s, transform 0.18s;
+    }
+    .recent-episode-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .recent-episode-card img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+    .recent-episode-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text);
+      padding: 0.75rem 0.9rem 0.2rem;
+      line-height: 1.3;
+    }
+    .recent-episode-date {
+      font-family: var(--font-serif);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding: 0 0.9rem 0.85rem;
     }
 
     /* ============================================================
@@ -943,10 +997,10 @@
             <span>Community Show.</span>
           </h1>
           <p class="hero-desc">
-            Amplify Washington is the weekday community show for Washington, Iowa — local voices, community news, and the people who make this town what it is. Coming this fall: livestream coverage of Washington Demons sports.
+            Amplify Washington is the weekday community show for Washington, Iowa — local voices, community news, and the people who make this town what it is. Daily shows begin the week of July 20, 2026, with Washington Demons sports livestream coverage to follow in September 2026.
           </p>
           <div class="hero-meta">
-            <span>Community show live every weekday</span>
+            <span>Daily shows begin the week of July 20, 2026</span>
             <span>&middot;</span>
             <span>Demons sports coverage begins September 2026</span>
           </div>
@@ -969,12 +1023,23 @@
     <section class="section section--dark" id="watch" aria-labelledby="watch-heading">
       <div class="container">
         <p class="section-label">Watch &amp; Follow</p>
-        <h2 class="section-title" id="watch-heading">Watch the Latest Episode</h2>
+        <h2 class="section-title" id="watch-heading">Live &amp; Latest</h2>
         <p class="section-intro">
-          Amplify Washington's community show goes live every weekday. Catch the latest episode below, or watch live and on replay any time on YouTube.
+          Amplify Washington's community show begins the week of July 20, 2026. What's live or most recent plays below — or watch any time on YouTube.
         </p>
 
-        <div class="video-wrap" id="latest-video-wrap" role="region" aria-label="Latest community show episode"></div>
+        <div class="watch-status-row">
+          <span class="watch-status-badge" id="watch-status-badge">Watch &amp; Follow</span>
+          <span class="watch-status-meta" id="watch-status-meta"></span>
+        </div>
+
+        <div class="video-wrap" id="latest-video-wrap" role="region" aria-label="Community show player">
+          <noscript>
+            <div class="video-placeholder">
+              <p>Enable JavaScript to watch here, or <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">watch on YouTube</a>.</p>
+            </div>
+          </noscript>
+        </div>
         <div class="watch-link-row">
           <a class="yt-direct-link" id="latest-video-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Watch on YouTube &rarr;</a>
         </div>
@@ -992,23 +1057,30 @@
       </div>
     </section>
 
-    <!-- ── SHOW ARCHIVE ── -->
+    <!-- ── RECENT EPISODES ── -->
     <section class="section" id="archive" aria-labelledby="archive-heading">
       <div class="container">
         <p class="section-label">Show Archive</p>
         <h2 class="section-title" id="archive-heading">Recent Episodes</h2>
         <p class="section-intro">
-          Browse recent community show episodes from the last 30 days. This archive is a curated YouTube playlist, so it always reflects the most recent shows.
+          The most recent community-show episodes. Looking for something older? The full archive is moving to the Amplify Media Platform app — until then, browse everything on YouTube.
         </p>
 
         <!--
-          The rolling ~30-day archive is controlled entirely by YouTube playlist
-          membership: add an episode to include it, remove it to retire it.
-          No episode data is hardcoded here.
+          Populated from the live-data resolver's recentCommunity list, or from
+          SITE_CONFIG.recentCommunityShows if manually curated (max 5 shown).
+          Falls back to a single curated-playlist embed (communityPlaylistId)
+          when neither is available, so nothing has to be hardcoded to stay
+          useful — add or remove videos from the playlist and this updates on
+          its own.
         -->
-        <div class="video-wrap" id="archive-video-wrap" role="region" aria-label="Recent episodes playlist"></div>
-        <div class="watch-link-row">
-          <a class="yt-direct-link" id="archive-video-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Open full playlist on YouTube &rarr;</a>
+        <div class="recent-episodes-grid" id="recent-episodes-grid" role="list" hidden></div>
+
+        <div class="archive-fallback-embed" id="archive-fallback-embed">
+          <div class="video-wrap" id="archive-video-wrap" role="region" aria-label="Recent episodes playlist"></div>
+          <div class="watch-link-row">
+            <a class="yt-direct-link" id="archive-video-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Open full playlist on YouTube &rarr;</a>
+          </div>
         </div>
       </div>
     </section>
@@ -1252,25 +1324,52 @@
     // Update these values as real IDs/URLs become available. Blank
     // values render a designed empty state instead of a broken embed.
     const SITE_CONFIG = {
+      cityKey: "washington",
+      cityName: "Washington",
+      timezone: "America/Chicago",
+
       youtubeChannelUrl: "https://www.youtube.com/@AmplifyWashington",
+      // TODO: confirm the real Amplify Washington YouTube channel ID
+      youtubeChannelId: "",
       facebookUrl: "https://www.facebook.com/AmplifyWashington",
 
-      // TODO: set to the current community-show episode's YouTube video ID
-      latestDailyShowVideoId: "",
-      // TODO: set to a YouTube playlist ID curated as a rolling ~30-day archive
-      dailyShowPlaylistId: "",
+      // TODO: set once the live-data resolver (Cloudflare Worker) is deployed.
+      // See /Amplify_Live_Data for the scaffolded resolver source and docs.
+      // Blank = the site runs entirely on the static fallback fields below.
+      resolverUrl: "",
 
-      // TODO: confirm whether Washington Demons sports coverage uses this channel or a dedicated one
+      // TODO: set to the current community-show episode's YouTube video ID
+      fallbackCommunityVideoId: "",
+      // TODO: set to a YouTube playlist ID curated as a rolling ~30-day archive
+      communityPlaylistId: "",
+      // TODO: manually curated { videoId, title, date } entries for the
+      // Recent Episodes grid (max 5 shown). Leave empty to fall back to the
+      // communityPlaylistId embed, or to the resolver's recentCommunity list.
+      recentCommunityShows: [],
+
+      // TODO: confirm whether Washington Demons sports coverage uses this
+      // channel or a dedicated one
       sportsChannelUrl: "",
       // TODO: set once a sports broadcast is live
-      sportsLiveVideoId: "",
+      fallbackSportsVideoId: "",
       // TODO: set to the 2026–27 sports season playlist ID once created
       sportsPlaylistId: "",
-      sportsSeasonLabel: "2026–27 Season",
-      sportsLaunchText: "Live sports coverage begins September 2026",
+      // TODO: set once a highlights playlist exists (Phase 3)
+      sportsHighlightsPlaylistId: "",
 
       // TODO: set once the Amplify Media Platform app has a public URL
-      appUrl: ""
+      appUrl: "",
+      sportsSeasonLabel: "2026–27 Season",
+      sportsLaunchText: "Live sports coverage begins September 2026",
+      communityScheduleText: "every weekday",
+      // Daily shows haven't launched yet — this takes priority over the
+      // generic fallback message until the show has aired and this is
+      // cleared back to "".
+      communityLaunchText: "Daily shows begin the week of July 20, 2026. Watch live, or catch replays on YouTube.",
+
+      // How often (seconds) to re-poll the resolver for live-state changes.
+      // Has no effect while resolverUrl is blank.
+      liveRefreshSeconds: 120
     };
 
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -1376,26 +1475,169 @@
       }
     }
 
-    // Latest community-show episode (eager: it's the primary above-the-fold player)
-    mountVideo(
-      'latest-video-wrap', 'latest-video-link',
-      SITE_CONFIG.latestDailyShowVideoId, 'Latest Amplify Washington community show episode', true,
-      'The latest episode will appear here soon. Watch live every weekday, or catch replays on YouTube.',
-      'Watch on YouTube', SITE_CONFIG.youtubeChannelUrl
-    );
+    // ── Central Time formatting (pinned to America/Chicago regardless of
+    //    the visitor's own timezone, since the show's schedule is local) ──
+    function formatCentral(isoString) {
+      if (!isoString) return '';
+      var date = new Date(isoString);
+      if (isNaN(date.getTime())) return '';
+      try {
+        return new Intl.DateTimeFormat('en-US', {
+          timeZone: SITE_CONFIG.timezone,
+          weekday: 'long', month: 'long', day: 'numeric',
+          hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
+        }).format(date);
+      } catch (err) {
+        return '';
+      }
+    }
 
-    // Rolling ~30-day show archive playlist
-    mountPlaylist(
-      'archive-video-wrap', 'archive-video-link',
-      SITE_CONFIG.dailyShowPlaylistId, 'Amplify Washington recent episodes playlist',
-      'Recent episodes will appear here once the archive playlist is set up. In the meantime, browse the full history on our YouTube channel.',
-      'Visit YouTube Channel', SITE_CONFIG.youtubeChannelUrl
-    );
+    // ── Live-data resolver client ────────────────────────────────
+    // Fetches SITE_CONFIG.resolverUrl with a timeout. Returns null on any
+    // failure (not configured, offline, timeout, bad JSON, non-200) so
+    // callers always have a clean "use the static fallback" signal instead
+    // of a thrown error.
+    function fetchResolverData(url, timeoutMs) {
+      if (!url) return Promise.resolve(null);
+      var controller = new AbortController();
+      var timeout = setTimeout(function() { controller.abort(); }, timeoutMs || 4000);
+      return fetch(url, { signal: controller.signal })
+        .then(function(res) { return res.ok ? res.json() : null; })
+        .catch(function() { return null; })
+        .then(function(result) { clearTimeout(timeout); return result; });
+    }
 
-    // Sports live broadcast
+    // Renders the community player from a resolver `community` object.
+    // Returns true if it handled rendering, false if the caller should fall
+    // back to the static configuration instead. Never shows "Live Now"
+    // unless the resolver explicitly confirms status === 'live'.
+    function renderCommunityFromResolver(community) {
+      var badge = document.getElementById('watch-status-badge');
+      var meta = document.getElementById('watch-status-meta');
+      if (!community || community.status === 'unavailable') return false;
+
+      if (community.status === 'live') {
+        badge.textContent = 'Live Now';
+        badge.classList.add('is-live');
+        meta.textContent = community.actualStart ? 'Started ' + formatCentral(community.actualStart) : '';
+        mountVideo('latest-video-wrap', 'latest-video-link', community.videoId, community.title, true, '', '', '');
+        return true;
+      }
+
+      if (community.status === 'upcoming') {
+        badge.textContent = 'Next Broadcast';
+        badge.classList.remove('is-live');
+        meta.textContent = community.scheduledStart ? formatCentral(community.scheduledStart) : '';
+        // Do not embed a player for a broadcast that hasn't started yet —
+        // YouTube doesn't reliably support playback for a not-yet-live ID.
+        document.getElementById('latest-video-wrap').innerHTML = emptyStateHTML(
+          'The next episode is scheduled for ' + (community.scheduledStart ? formatCentral(community.scheduledStart) : 'soon') + '.',
+          'Get Notified on YouTube', community.youtubeUrl || SITE_CONFIG.youtubeChannelUrl
+        );
+        var link = document.getElementById('latest-video-link');
+        if (link) link.href = community.youtubeUrl || SITE_CONFIG.youtubeChannelUrl;
+        return true;
+      }
+
+      if (community.status === 'replay') {
+        badge.textContent = 'Most Recent Show';
+        badge.classList.remove('is-live');
+        meta.textContent = community.actualStart ? formatCentral(community.actualStart) : '';
+        mountVideo('latest-video-wrap', 'latest-video-link', community.videoId, community.title, true, '', '', '');
+        return true;
+      }
+
+      return false;
+    }
+
+    // Renders up to 5 recent-episode thumbnail cards using YouTube's public
+    // thumbnail CDN (no API call). Clicking a card swaps the primary player
+    // instead of loading its own iframe.
+    function renderRecentEpisodes(items) {
+      var grid = document.getElementById('recent-episodes-grid');
+      var fallbackEmbed = document.getElementById('archive-fallback-embed');
+      if (!items || !items.length) {
+        grid.hidden = true;
+        grid.innerHTML = '';
+        fallbackEmbed.hidden = false;
+        return;
+      }
+
+      fallbackEmbed.hidden = true;
+      grid.hidden = false;
+      grid.innerHTML = items.slice(0, 5).map(function(ep) {
+        var label = ep.title + (ep.date ? ', ' + ep.date : '');
+        return '<button type="button" class="recent-episode-card" role="listitem"' +
+            ' data-video-id="' + escapeAttr(ep.videoId) + '" data-title="' + escapeAttr(ep.title) + '"' +
+            ' aria-label="Play episode: ' + escapeAttr(label) + '">' +
+            '<img src="https://i.ytimg.com/vi/' + encodeURIComponent(ep.videoId) + '/hqdefault.jpg" alt="" loading="lazy" width="320" height="180">' +
+            '<span class="recent-episode-title">' + escapeAttr(ep.title) + '</span>' +
+            (ep.date ? '<span class="recent-episode-date">' + escapeAttr(ep.date) + '</span>' : '') +
+          '</button>';
+      }).join('');
+
+      grid.querySelectorAll('.recent-episode-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          var videoId = card.getAttribute('data-video-id');
+          var title = card.getAttribute('data-title');
+          mountVideo('latest-video-wrap', 'latest-video-link', videoId, title, true, '', '', '');
+          var badge = document.getElementById('watch-status-badge');
+          badge.textContent = 'Selected Episode';
+          badge.classList.remove('is-live');
+          document.getElementById('watch-status-meta').textContent = title;
+          document.getElementById('watch').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    }
+
+    // ── Boot sequence: try the resolver, fall back to static config ─────
+    function initCommunityLiveAndLatest() {
+      var resolverPromise = SITE_CONFIG.resolverUrl
+        ? fetchResolverData(SITE_CONFIG.resolverUrl, 4000)
+        : Promise.resolve(null);
+
+      resolverPromise.then(function(data) {
+        var handledByResolver = data ? renderCommunityFromResolver(data.community) : false;
+        if (!handledByResolver) {
+          // Static fallback — never claims "Live Now" without confirmed data.
+          var badge = document.getElementById('watch-status-badge');
+          badge.classList.remove('is-live');
+          badge.textContent = SITE_CONFIG.fallbackCommunityVideoId ? 'Most Recent Show' : 'Watch & Follow';
+          document.getElementById('watch-status-meta').textContent = '';
+          mountVideo(
+            'latest-video-wrap', 'latest-video-link',
+            SITE_CONFIG.fallbackCommunityVideoId, 'Latest ' + SITE_CONFIG.cityName + ' community show episode', true,
+            SITE_CONFIG.communityLaunchText || ('The latest episode will appear here soon. Watch live ' + SITE_CONFIG.communityScheduleText + ', or catch replays on YouTube.'),
+            'Watch on YouTube', SITE_CONFIG.youtubeChannelUrl
+          );
+        }
+
+        var recentItems = (data && data.recentCommunity && data.recentCommunity.length)
+          ? data.recentCommunity
+          : (SITE_CONFIG.recentCommunityShows.length ? SITE_CONFIG.recentCommunityShows : null);
+        renderRecentEpisodes(recentItems);
+
+        // Curated-playlist fallback for the archive section — only visible
+        // when renderRecentEpisodes() has no per-episode data to show.
+        mountPlaylist(
+          'archive-video-wrap', 'archive-video-link',
+          SITE_CONFIG.communityPlaylistId, 'Amplify Washington recent episodes playlist',
+          'Recent episodes will appear here once the archive playlist is set up. In the meantime, browse the full history on our YouTube channel.',
+          'Visit YouTube Channel', SITE_CONFIG.youtubeChannelUrl
+        );
+
+        if (SITE_CONFIG.resolverUrl && SITE_CONFIG.liveRefreshSeconds) {
+          setTimeout(initCommunityLiveAndLatest, SITE_CONFIG.liveRefreshSeconds * 1000);
+        }
+      });
+    }
+
+    initCommunityLiveAndLatest();
+
+    // Sports live broadcast (unchanged in Phase 1 — Phase 2 will extend this)
     mountVideo(
       'sports-live-wrap', 'sports-live-link',
-      SITE_CONFIG.sportsLiveVideoId, 'Washington Demons sports livestream broadcast', false,
+      SITE_CONFIG.fallbackSportsVideoId, 'Washington Demons sports livestream broadcast', false,
       SITE_CONFIG.sportsLaunchText + '. Live games and replays will appear here once the season starts.',
       'Follow for Schedule Updates', SITE_CONFIG.sportsChannelUrl || SITE_CONFIG.youtubeChannelUrl
     );
