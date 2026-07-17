@@ -571,6 +571,54 @@
       color: rgba(255,255,255,0.65);
     }
 
+    /* Shown only when a live broadcast starts while the visitor has
+       manually selected a recent episode — never appears on its own. */
+    .watch-live-now-banner {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid var(--orange);
+      border-radius: var(--radius);
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 1rem;
+    }
+    /* [hidden] alone loses to the plain-class `display: flex` above (equal
+       specificity, later source order) unless given higher specificity
+       here — without this, the banner is visible on every page load. */
+    .watch-live-now-banner[hidden] { display: none; }
+    .watch-live-now-banner p {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    .watch-return-row { margin-top: 0.75rem; }
+    .watch-return-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: var(--font-serif);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--orange);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+    }
+    .watch-return-btn:hover { color: var(--orange-light); }
+
+    .watch-freshness-note {
+      font-family: var(--font-serif);
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      font-style: italic;
+      margin-top: -0.5rem;
+      margin-bottom: 1rem;
+    }
+
     /* Recent episodes — thumbnail cards, one shared player, no extra iframes */
     .recent-episodes-grid {
       display: grid;
@@ -578,6 +626,10 @@
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
+    /* [hidden] alone loses to the plain-class `display: grid` above (equal
+       specificity, later source order) unless given higher specificity
+       here — without this, a "hidden" grid still renders. */
+    .recent-episodes-grid[hidden] { display: none; }
     .recent-episode-card {
       display: flex;
       flex-direction: column;
@@ -592,6 +644,10 @@
       transition: box-shadow 0.18s, transform 0.18s;
     }
     .recent-episode-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .recent-episode-card.is-selected {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 2px var(--orange);
+    }
     .recent-episode-card img {
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -997,10 +1053,10 @@
             <span>Community Show.</span>
           </h1>
           <p class="hero-desc">
-            Amplify Washington is the weekday community show for Washington, Iowa — local voices, community news, and the people who make this town what it is. Daily shows begin the week of July 20, 2026, with Washington Demons sports livestream coverage to follow in September 2026.
+            Amplify Washington is the weekday community show for Washington, Iowa — local voices, community news, and the people who make this town what it is. Daily shows begin Monday, August 3, 2026, with Washington Demons sports livestream coverage to follow in September 2026.
           </p>
           <div class="hero-meta">
-            <span>Daily shows begin the week of July 20, 2026</span>
+            <span>Daily shows begin Monday, August 3, 2026</span>
             <span>&middot;</span>
             <span>Demons sports coverage begins September 2026</span>
           </div>
@@ -1025,12 +1081,21 @@
         <p class="section-label">Watch &amp; Follow</p>
         <h2 class="section-title" id="watch-heading">Live &amp; Latest</h2>
         <p class="section-intro">
-          Amplify Washington's community show begins the week of July 20, 2026. What's live or most recent plays below — or watch any time on YouTube.
+          Amplify Washington's community show begins Monday, August 3, 2026. What's live or most recent plays below — or watch any time on YouTube.
         </p>
 
         <div class="watch-status-row">
           <span class="watch-status-badge" id="watch-status-badge">Watch &amp; Follow</span>
-          <span class="watch-status-meta" id="watch-status-meta"></span>
+          <span class="watch-status-meta" id="watch-status-meta" aria-live="polite"></span>
+        </div>
+
+        <!-- Shown only when the visitor has selected a recent episode and a
+             real broadcast goes live in the meantime. Never auto-interrupts
+             playback -- this is the only path back to live, and it's a
+             deliberate click. -->
+        <div class="watch-live-now-banner" id="watch-live-now-banner" role="status" hidden>
+          <p>A new broadcast just went live.</p>
+          <button type="button" id="watch-live-now-accept" class="btn btn-primary">Watch Live Now</button>
         </div>
 
         <div class="video-wrap" id="latest-video-wrap" role="region" aria-label="Community show player">
@@ -1040,6 +1105,16 @@
             </div>
           </noscript>
         </div>
+
+        <!-- Shown only after the visitor manually selects a recent episode
+             below -- lets them get back to whatever is actually live/latest
+             without the page doing it for them. -->
+        <div class="watch-return-row" id="watch-return-row" hidden>
+          <button type="button" id="watch-return-to-live" class="watch-return-btn">&larr; Return to Live &amp; Latest</button>
+        </div>
+
+        <p class="watch-freshness-note" id="watch-freshness-note" aria-live="polite" hidden></p>
+
         <div class="watch-link-row">
           <a class="yt-direct-link" id="latest-video-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Watch on YouTube &rarr;</a>
         </div>
@@ -1333,10 +1408,10 @@
       youtubeChannelId: "",
       facebookUrl: "https://www.facebook.com/AmplifyWashington",
 
-      // TODO: set once the live-data resolver (Cloudflare Worker) is deployed.
-      // See /Amplify_Live_Data for the scaffolded resolver source and docs.
-      // Blank = the site runs entirely on the static fallback fields below.
-      resolverUrl: "",
+      // Staging resolver only — do not point this at a production URL yet.
+      // See /Amplify_Live_Data for the resolver source and docs. Blank would
+      // make the site run entirely on the static fallback fields below.
+      resolverUrl: "https://amplify-live-data-staging.kellengracey.workers.dev/api/washington",
 
       // TODO: set to the current community-show episode's YouTube video ID
       fallbackCommunityVideoId: "",
@@ -1365,10 +1440,13 @@
       // Daily shows haven't launched yet — this takes priority over the
       // generic fallback message until the show has aired and this is
       // cleared back to "".
-      communityLaunchText: "Daily shows begin the week of July 20, 2026. Watch live, or catch replays on YouTube.",
+      communityLaunchText: "Daily shows begin Monday, August 3, 2026. Watch live, or catch replays on YouTube.",
 
-      // How often (seconds) to re-poll the resolver for live-state changes.
-      // Has no effect while resolverUrl is blank.
+      // How often (seconds) to re-poll the resolver. Adaptive: the shorter
+      // interval applies while the community show is live, or upcoming
+      // within 30 minutes; the longer one applies otherwise. Has no effect
+      // while resolverUrl is blank.
+      liveActiveRefreshSeconds: 30,
       liveRefreshSeconds: 120
     };
 
@@ -1507,56 +1585,268 @@
         .then(function(result) { clearTimeout(timeout); return result; });
     }
 
-    // Renders the community player from a resolver `community` object.
-    // Returns true if it handled rendering, false if the caller should fall
-    // back to the static configuration instead. Never shows "Live Now"
-    // unless the resolver explicitly confirms status === 'live'.
-    function renderCommunityFromResolver(community) {
+    // ── Derived display dates (the resolver contract has no redundant
+    //    `date` field — these are the only places that derive one) ───────
+    // For a completed episode (replay/upload — recentCommunity is always
+    // one of these; see Amplify_Live_Data's docs/CONTRACT.md). Deliberately
+    // does not fall back to scheduledStart: a completed episode reporting a
+    // *future* scheduled time would be nonsensical, and recentCommunity
+    // never contains upcoming/live items in the first place.
+    function deriveDisplayDate(media) {
+      if (!media) return null;
+      return media.actualStart || media.publishedAt || media.actualEnd || null;
+    }
+
+    // For an upcoming broadcast rendered anywhere outside Recent Episodes
+    // (i.e. the primary Next Broadcast module).
+    function deriveUpcomingDate(media) {
+      if (!media) return null;
+      return media.scheduledStart || media.publishedAt || null;
+    }
+
+    // ISO 8601 duration ("PT13M20S") -> "13:20". Returns '' if unparseable.
+    function formatDuration(iso) {
+      if (!iso) return '';
+      var m = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(iso);
+      if (!m || (!m[1] && !m[2] && !m[3])) return '';
+      var h = parseInt(m[1] || '0', 10);
+      var min = parseInt(m[2] || '0', 10);
+      var s = parseInt(m[3] || '0', 10);
+      var parts = [];
+      if (h) { parts.push(String(h)); parts.push(('' + min).padStart(2, '0')); }
+      else { parts.push(String(min)); }
+      parts.push(('' + s).padStart(2, '0'));
+      return parts.join(':');
+    }
+
+    // ── Community Live & Latest controller ──────────────────────────────
+    // Owns exactly one invariant: the primary iframe is only ever recreated
+    // when the video it should show actually changes. A routine resolver
+    // poll that resolves to the same video ID never touches the iframe —
+    // no restart, no reset playback, no stolen focus/scroll.
+    var communityController = {
+      mountedVideoId: null,
+      hasMountedValidVideo: false,
+      userSelected: false,
+      lastPayload: null,
+      pollTimer: null,
+      requestSeq: 0,
+      inFlight: false,
+      lastFetchAt: 0
+    };
+
+    function setTextIfChanged(el, text) {
+      if (el && el.textContent !== text) el.textContent = text;
+    }
+
+    function setStatusChrome(label, metaText, isLive) {
       var badge = document.getElementById('watch-status-badge');
       var meta = document.getElementById('watch-status-meta');
-      if (!community || community.status === 'unavailable') return false;
-
-      if (community.status === 'live') {
-        badge.textContent = 'Live Now';
-        badge.classList.add('is-live');
-        meta.textContent = community.actualStart ? 'Started ' + formatCentral(community.actualStart) : '';
-        mountVideo('latest-video-wrap', 'latest-video-link', community.videoId, community.title, true, '', '', '');
-        return true;
-      }
-
-      if (community.status === 'upcoming') {
-        badge.textContent = 'Next Broadcast';
-        badge.classList.remove('is-live');
-        meta.textContent = community.scheduledStart ? formatCentral(community.scheduledStart) : '';
-        // Do not embed a player for a broadcast that hasn't started yet —
-        // YouTube doesn't reliably support playback for a not-yet-live ID.
-        document.getElementById('latest-video-wrap').innerHTML = emptyStateHTML(
-          'The next episode is scheduled for ' + (community.scheduledStart ? formatCentral(community.scheduledStart) : 'soon') + '.',
-          'Get Notified on YouTube', community.youtubeUrl || SITE_CONFIG.youtubeChannelUrl
-        );
-        var link = document.getElementById('latest-video-link');
-        if (link) link.href = community.youtubeUrl || SITE_CONFIG.youtubeChannelUrl;
-        return true;
-      }
-
-      if (community.status === 'replay') {
-        badge.textContent = 'Most Recent Show';
-        badge.classList.remove('is-live');
-        meta.textContent = community.actualStart ? formatCentral(community.actualStart) : '';
-        mountVideo('latest-video-wrap', 'latest-video-link', community.videoId, community.title, true, '', '', '');
-        return true;
-      }
-
-      return false;
+      setTextIfChanged(badge, label);
+      badge.classList.toggle('is-live', Boolean(isLive));
+      setTextIfChanged(meta, metaText || '');
     }
+
+    function statusChromeForCommunity(community) {
+      if (community.status === 'live') {
+        setStatusChrome('Live Now', community.actualStart ? 'Started ' + formatCentral(community.actualStart) : '', true);
+      } else if (community.status === 'upcoming') {
+        var upcomingDate = deriveUpcomingDate(community);
+        setStatusChrome('Next Broadcast', upcomingDate ? formatCentral(upcomingDate) : '', false);
+      } else {
+        var displayDate = deriveDisplayDate(community);
+        setStatusChrome('Most Recent Show', displayDate ? formatCentral(displayDate) : '', false);
+      }
+    }
+
+    function mountPrimaryIframe(videoId, title) {
+      mountVideo('latest-video-wrap', 'latest-video-link', videoId, title, true, '', '', '');
+      communityController.mountedVideoId = videoId;
+      communityController.hasMountedValidVideo = true;
+    }
+
+    function mountUpcomingTreatment(community) {
+      // Never embed a player for a broadcast that hasn't started — YouTube
+      // doesn't reliably support playback for a not-yet-live video ID, and
+      // a countdown-style thumbnail is not a real player either.
+      var upcomingDate = deriveUpcomingDate(community);
+      document.getElementById('latest-video-wrap').innerHTML = emptyStateHTML(
+        'The next episode is scheduled for ' + (upcomingDate ? formatCentral(upcomingDate) : 'soon') + '.',
+        'Get Notified on YouTube', community.youtubeUrl || SITE_CONFIG.youtubeChannelUrl
+      );
+      var link = document.getElementById('latest-video-link');
+      if (link) link.href = community.youtubeUrl || SITE_CONFIG.youtubeChannelUrl;
+      communityController.mountedVideoId = null;
+    }
+
+    function mountPrimaryForStatus(community) {
+      if (community.status === 'upcoming') mountUpcomingTreatment(community);
+      else mountPrimaryIframe(community.videoId, community.title);
+    }
+
+    function showReturnToLive(show) {
+      var row = document.getElementById('watch-return-row');
+      if (row) row.hidden = !show;
+    }
+
+    function showLiveNowBanner(community) {
+      var banner = document.getElementById('watch-live-now-banner');
+      if (!banner) return;
+      banner.hidden = false;
+      banner.pendingCommunity = community;
+    }
+
+    function hideLiveNowBanner() {
+      var banner = document.getElementById('watch-live-now-banner');
+      if (banner) { banner.hidden = true; banner.pendingCommunity = null; }
+    }
+
+    function setFreshnessNote(payload) {
+      var note = document.getElementById('watch-freshness-note');
+      if (!note) return;
+      if (payload && payload.isStale) {
+        setTextIfChanged(note, 'Showing the latest available broadcast information.');
+        note.hidden = false;
+      } else {
+        note.hidden = true;
+      }
+    }
+
+    function renderStaticFallback() {
+      setStatusChrome(SITE_CONFIG.fallbackCommunityVideoId ? 'Most Recent Show' : 'Watch & Follow', '', false);
+      mountVideo(
+        'latest-video-wrap', 'latest-video-link',
+        SITE_CONFIG.fallbackCommunityVideoId, 'Latest ' + SITE_CONFIG.cityName + ' community show episode', true,
+        SITE_CONFIG.communityLaunchText || ('The latest episode will appear here soon. Watch live ' + SITE_CONFIG.communityScheduleText + ', or catch replays on YouTube.'),
+        'Watch on YouTube', SITE_CONFIG.youtubeChannelUrl
+      );
+      if (SITE_CONFIG.fallbackCommunityVideoId) {
+        communityController.mountedVideoId = SITE_CONFIG.fallbackCommunityVideoId;
+        communityController.hasMountedValidVideo = true;
+      }
+    }
+
+    function markSelectedCard(videoId) {
+      document.querySelectorAll('.recent-episode-card').forEach(function(card) {
+        var isMatch = card.getAttribute('data-video-id') === videoId;
+        card.classList.toggle('is-selected', isMatch);
+        card.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+      });
+    }
+
+    function clearSelectedCards() {
+      document.querySelectorAll('.recent-episode-card').forEach(function(card) {
+        card.classList.remove('is-selected');
+        card.setAttribute('aria-pressed', 'false');
+      });
+    }
+
+    // Applies one resolver payload (or null on a failed/skipped fetch) to
+    // the Live & Latest stage. A null payload changes nothing on screen —
+    // whatever was already rendered (video, badge, note) is left exactly
+    // as it was, per "never blank the player due to a temporary network
+    // failure."
+    function applyCommunityPayload(payload) {
+      if (!payload) {
+        if (!communityController.hasMountedValidVideo) renderStaticFallback();
+        return;
+      }
+      communityController.lastPayload = payload;
+      var community = payload.community;
+
+      if (!community || community.status === 'unavailable') {
+        if (!communityController.hasMountedValidVideo) renderStaticFallback();
+        setFreshnessNote(payload);
+        return;
+      }
+
+      var sameVideo = community.videoId && community.videoId === communityController.mountedVideoId;
+
+      if (sameVideo) {
+        // Identical video: refresh labels/freshness only. The iframe is
+        // never touched, so playback, focus, and scroll position survive
+        // this poll untouched.
+        statusChromeForCommunity(community);
+        setFreshnessNote(payload);
+        return;
+      }
+
+      if (communityController.userSelected) {
+        // The visitor is deliberately browsing a different episode. Only a
+        // genuine new live broadcast interrupts that — and only via an
+        // explicit "Watch Live Now" click, never automatically.
+        if (community.status === 'live') showLiveNowBanner(community);
+        setFreshnessNote(payload);
+        return;
+      }
+
+      mountPrimaryForStatus(community);
+      statusChromeForCommunity(community);
+      hideLiveNowBanner();
+      setFreshnessNote(payload);
+    }
+
+    function selectRecentEpisode(videoId, title, displayDateIso) {
+      communityController.userSelected = true;
+      mountPrimaryIframe(videoId, title);
+      var formatted = displayDateIso ? formatCentral(displayDateIso) : '';
+      setStatusChrome('Selected Episode', title + (formatted ? ' — ' + formatted : ''), false);
+      hideLiveNowBanner();
+      showReturnToLive(true);
+      markSelectedCard(videoId);
+    }
+
+    function returnToLiveAndLatest() {
+      communityController.userSelected = false;
+      showReturnToLive(false);
+      hideLiveNowBanner();
+      clearSelectedCards();
+      var community = communityController.lastPayload && communityController.lastPayload.community;
+      if (community && community.status !== 'unavailable') {
+        if (community.videoId && community.videoId === communityController.mountedVideoId) {
+          statusChromeForCommunity(community);
+        } else {
+          mountPrimaryForStatus(community);
+          statusChromeForCommunity(community);
+        }
+      }
+      document.getElementById('watch').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function acceptLiveNow() {
+      var banner = document.getElementById('watch-live-now-banner');
+      var community = banner && banner.pendingCommunity;
+      if (!community) return;
+      communityController.userSelected = false;
+      hideLiveNowBanner();
+      showReturnToLive(false);
+      clearSelectedCards();
+      mountPrimaryForStatus(community);
+      statusChromeForCommunity(community);
+    }
+
+    var returnToLiveBtn = document.getElementById('watch-return-to-live');
+    if (returnToLiveBtn) returnToLiveBtn.addEventListener('click', returnToLiveAndLatest);
+    var liveNowAcceptBtn = document.getElementById('watch-live-now-accept');
+    if (liveNowAcceptBtn) liveNowAcceptBtn.addEventListener('click', acceptLiveNow);
 
     // Renders up to 5 recent-episode thumbnail cards using YouTube's public
     // thumbnail CDN (no API call). Clicking a card swaps the primary player
     // instead of loading its own iframe.
-    function renderRecentEpisodes(items) {
+    function renderRecentEpisodes(rawItems) {
       var grid = document.getElementById('recent-episodes-grid');
       var fallbackEmbed = document.getElementById('archive-fallback-embed');
-      if (!items || !items.length) {
+      // Defensive: the resolver already excludes live/upcoming from
+      // recentCommunity (see Amplify_Live_Data's docs/CONTRACT.md), but
+      // never trust a single layer for "never show a scheduled broadcast as
+      // a past episode" -- drop anything explicitly marked live/upcoming
+      // here too. Manually curated SITE_CONFIG.recentCommunityShows entries
+      // have no `status` field at all and are left alone; a human already
+      // curated those.
+      var items = (rawItems || []).filter(function(ep) {
+        return ep.status !== 'live' && ep.status !== 'upcoming';
+      });
+      if (!items.length) {
         grid.hidden = true;
         grid.innerHTML = '';
         fallbackEmbed.hidden = false;
@@ -1566,56 +1856,103 @@
       fallbackEmbed.hidden = true;
       grid.hidden = false;
       grid.innerHTML = items.slice(0, 5).map(function(ep) {
-        var label = ep.title + (ep.date ? ', ' + ep.date : '');
-        return '<button type="button" class="recent-episode-card" role="listitem"' +
-            ' data-video-id="' + escapeAttr(ep.videoId) + '" data-title="' + escapeAttr(ep.title) + '"' +
+        var displayDateIso = deriveDisplayDate(ep);
+        var formattedDate = displayDateIso ? formatCentral(displayDateIso) : '';
+        var durationText = formatDuration(ep.duration);
+        var label = ep.title + (formattedDate ? ', ' + formattedDate : '');
+        var metaLine = [formattedDate, durationText].filter(Boolean).join(' · ');
+        return '<button type="button" class="recent-episode-card" role="listitem" aria-pressed="false"' +
+            ' data-video-id="' + escapeAttr(ep.videoId) + '" data-title="' + escapeAttr(ep.title) + '" data-display-date="' + escapeAttr(displayDateIso || '') + '"' +
             ' aria-label="Play episode: ' + escapeAttr(label) + '">' +
             '<img src="https://i.ytimg.com/vi/' + encodeURIComponent(ep.videoId) + '/hqdefault.jpg" alt="" loading="lazy" width="320" height="180">' +
             '<span class="recent-episode-title">' + escapeAttr(ep.title) + '</span>' +
-            (ep.date ? '<span class="recent-episode-date">' + escapeAttr(ep.date) + '</span>' : '') +
+            (metaLine ? '<span class="recent-episode-date">' + escapeAttr(metaLine) + '</span>' : '') +
           '</button>';
       }).join('');
 
       grid.querySelectorAll('.recent-episode-card').forEach(function(card) {
         card.addEventListener('click', function() {
-          var videoId = card.getAttribute('data-video-id');
-          var title = card.getAttribute('data-title');
-          mountVideo('latest-video-wrap', 'latest-video-link', videoId, title, true, '', '', '');
-          var badge = document.getElementById('watch-status-badge');
-          badge.textContent = 'Selected Episode';
-          badge.classList.remove('is-live');
-          document.getElementById('watch-status-meta').textContent = title;
-          document.getElementById('watch').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          selectRecentEpisode(
+            card.getAttribute('data-video-id'),
+            card.getAttribute('data-title'),
+            card.getAttribute('data-display-date')
+          );
         });
       });
+
+      if (communityController.userSelected) markSelectedCard(communityController.mountedVideoId);
     }
 
-    // ── Boot sequence: try the resolver, fall back to static config ─────
-    function initCommunityLiveAndLatest() {
+    // ── Polling: single recursive setTimeout (never setInterval, so a slow
+    //    request can't overlap the next tick), paused while the tab is
+    //    hidden, resumed with an immediate check on return if stale ──────
+    function pollCommunityOnce() {
+      if (communityController.inFlight) return Promise.resolve();
+      communityController.inFlight = true;
+      var mySeq = ++communityController.requestSeq;
       var resolverPromise = SITE_CONFIG.resolverUrl
         ? fetchResolverData(SITE_CONFIG.resolverUrl, 4000)
         : Promise.resolve(null);
 
-      resolverPromise.then(function(data) {
-        var handledByResolver = data ? renderCommunityFromResolver(data.community) : false;
-        if (!handledByResolver) {
-          // Static fallback — never claims "Live Now" without confirmed data.
-          var badge = document.getElementById('watch-status-badge');
-          badge.classList.remove('is-live');
-          badge.textContent = SITE_CONFIG.fallbackCommunityVideoId ? 'Most Recent Show' : 'Watch & Follow';
-          document.getElementById('watch-status-meta').textContent = '';
-          mountVideo(
-            'latest-video-wrap', 'latest-video-link',
-            SITE_CONFIG.fallbackCommunityVideoId, 'Latest ' + SITE_CONFIG.cityName + ' community show episode', true,
-            SITE_CONFIG.communityLaunchText || ('The latest episode will appear here soon. Watch live ' + SITE_CONFIG.communityScheduleText + ', or catch replays on YouTube.'),
-            'Watch on YouTube', SITE_CONFIG.youtubeChannelUrl
-          );
-        }
+      return resolverPromise.then(function(data) {
+        communityController.inFlight = false;
+        if (mySeq !== communityController.requestSeq) return; // superseded — ignore this obsolete response
+        communityController.lastFetchAt = Date.now();
+
+        applyCommunityPayload(data);
 
         var recentItems = (data && data.recentCommunity && data.recentCommunity.length)
           ? data.recentCommunity
           : (SITE_CONFIG.recentCommunityShows.length ? SITE_CONFIG.recentCommunityShows : null);
         renderRecentEpisodes(recentItems);
+      });
+    }
+
+    // Adaptive cadence: poll faster while something time-sensitive is
+    // actually happening (live, or upcoming within 30 minutes), otherwise
+    // fall back to the slower baseline. Mirrors the resolver's own
+    // active/idle design (see /Amplify_Live_Data docs/CONTRACT.md) so the
+    // two layers stay in the same spirit without being coupled.
+    function getAdaptivePollIntervalSeconds() {
+      var activeSeconds = SITE_CONFIG.liveActiveRefreshSeconds || 30;
+      var idleSeconds = SITE_CONFIG.liveRefreshSeconds || 120;
+      var community = communityController.lastPayload && communityController.lastPayload.community;
+      if (!community) return idleSeconds;
+      if (community.status === 'live') return activeSeconds;
+      if (community.status === 'upcoming' && community.scheduledStart) {
+        var untilStartMs = new Date(community.scheduledStart).getTime() - Date.now();
+        if (untilStartMs >= 0 && untilStartMs <= 30 * 60 * 1000) return activeSeconds;
+      }
+      return idleSeconds;
+    }
+
+    function scheduleNextPoll() {
+      clearTimeout(communityController.pollTimer);
+      if (document.hidden) return; // resumed by the visibilitychange listener below
+      communityController.pollTimer = setTimeout(function() {
+        pollCommunityOnce().then(scheduleNextPoll);
+      }, getAdaptivePollIntervalSeconds() * 1000);
+    }
+
+    document.addEventListener('visibilitychange', function() {
+      if (!SITE_CONFIG.resolverUrl) return;
+      if (document.hidden) {
+        clearTimeout(communityController.pollTimer);
+        return;
+      }
+      var intervalMs = getAdaptivePollIntervalSeconds() * 1000;
+      var age = Date.now() - communityController.lastFetchAt;
+      if (!communityController.lastFetchAt || age > intervalMs) {
+        pollCommunityOnce().then(scheduleNextPoll);
+      } else {
+        scheduleNextPoll();
+      }
+    });
+
+    // ── Boot sequence: try the resolver, fall back to static config ─────
+    function initCommunityLiveAndLatest() {
+      pollCommunityOnce().then(function() {
+        if (SITE_CONFIG.resolverUrl && SITE_CONFIG.liveRefreshSeconds) scheduleNextPoll();
 
         // Curated-playlist fallback for the archive section — only visible
         // when renderRecentEpisodes() has no per-episode data to show.
@@ -1625,10 +1962,6 @@
           'Recent episodes will appear here once the archive playlist is set up. In the meantime, browse the full history on our YouTube channel.',
           'Visit YouTube Channel', SITE_CONFIG.youtubeChannelUrl
         );
-
-        if (SITE_CONFIG.resolverUrl && SITE_CONFIG.liveRefreshSeconds) {
-          setTimeout(initCommunityLiveAndLatest, SITE_CONFIG.liveRefreshSeconds * 1000);
-        }
       });
     }
 
