@@ -1442,8 +1442,11 @@
       // cleared back to "".
       communityLaunchText: "Daily shows begin the week of July 20, 2026. Watch live, or catch replays on YouTube.",
 
-      // How often (seconds) to re-poll the resolver for live-state changes.
-      // Has no effect while resolverUrl is blank.
+      // How often (seconds) to re-poll the resolver. Adaptive: the shorter
+      // interval applies while the community show is live, or upcoming
+      // within 30 minutes; the longer one applies otherwise. Has no effect
+      // while resolverUrl is blank.
+      liveActiveRefreshSeconds: 30,
       liveRefreshSeconds: 120
     };
 
@@ -1582,11 +1585,23 @@
         .then(function(result) { clearTimeout(timeout); return result; });
     }
 
-    // ── Derived display date (the resolver contract has no redundant
-    //    `date` field — this is the single place that derives one) ──────
+    // ── Derived display dates (the resolver contract has no redundant
+    //    `date` field — these are the only places that derive one) ───────
+    // For a completed episode (replay/upload — recentCommunity is always
+    // one of these; see Amplify_Live_Data's docs/CONTRACT.md). Deliberately
+    // does not fall back to scheduledStart: a completed episode reporting a
+    // *future* scheduled time would be nonsensical, and recentCommunity
+    // never contains upcoming/live items in the first place.
     function deriveDisplayDate(media) {
       if (!media) return null;
-      return media.actualStart || media.publishedAt || media.actualEnd || media.scheduledStart || null;
+      return media.actualStart || media.publishedAt || media.actualEnd || null;
+    }
+
+    // For an upcoming broadcast rendered anywhere outside Recent Episodes
+    // (i.e. the primary Next Broadcast module).
+    function deriveUpcomingDate(media) {
+      if (!media) return null;
+      return media.scheduledStart || media.publishedAt || null;
     }
 
     // ISO 8601 duration ("PT13M20S") -> "13:20". Returns '' if unparseable.
@@ -1636,7 +1651,8 @@
       if (community.status === 'live') {
         setStatusChrome('Live Now', community.actualStart ? 'Started ' + formatCentral(community.actualStart) : '', true);
       } else if (community.status === 'upcoming') {
-        setStatusChrome('Next Broadcast', community.scheduledStart ? formatCentral(community.scheduledStart) : '', false);
+        var upcomingDate = deriveUpcomingDate(community);
+        setStatusChrome('Next Broadcast', upcomingDate ? formatCentral(upcomingDate) : '', false);
       } else {
         var displayDate = deriveDisplayDate(community);
         setStatusChrome('Most Recent Show', displayDate ? formatCentral(displayDate) : '', false);
@@ -1653,8 +1669,9 @@
       // Never embed a player for a broadcast that hasn't started — YouTube
       // doesn't reliably support playback for a not-yet-live video ID, and
       // a countdown-style thumbnail is not a real player either.
+      var upcomingDate = deriveUpcomingDate(community);
       document.getElementById('latest-video-wrap').innerHTML = emptyStateHTML(
-        'The next episode is scheduled for ' + (community.scheduledStart ? formatCentral(community.scheduledStart) : 'soon') + '.',
+        'The next episode is scheduled for ' + (upcomingDate ? formatCentral(upcomingDate) : 'soon') + '.',
         'Get Notified on YouTube', community.youtubeUrl || SITE_CONFIG.youtubeChannelUrl
       );
       var link = document.getElementById('latest-video-link');
@@ -1816,10 +1833,20 @@
     // Renders up to 5 recent-episode thumbnail cards using YouTube's public
     // thumbnail CDN (no API call). Clicking a card swaps the primary player
     // instead of loading its own iframe.
-    function renderRecentEpisodes(items) {
+    function renderRecentEpisodes(rawItems) {
       var grid = document.getElementById('recent-episodes-grid');
       var fallbackEmbed = document.getElementById('archive-fallback-embed');
-      if (!items || !items.length) {
+      // Defensive: the resolver already excludes live/upcoming from
+      // recentCommunity (see Amplify_Live_Data's docs/CONTRACT.md), but
+      // never trust a single layer for "never show a scheduled broadcast as
+      // a past episode" -- drop anything explicitly marked live/upcoming
+      // here too. Manually curated SITE_CONFIG.recentCommunityShows entries
+      // have no `status` field at all and are left alone; a human already
+      // curated those.
+      var items = (rawItems || []).filter(function(ep) {
+        return ep.status !== 'live' && ep.status !== 'upcoming';
+      });
+      if (!items.length) {
         grid.hidden = true;
         grid.innerHTML = '';
         fallbackEmbed.hidden = false;
@@ -1881,12 +1908,30 @@
       });
     }
 
+    // Adaptive cadence: poll faster while something time-sensitive is
+    // actually happening (live, or upcoming within 30 minutes), otherwise
+    // fall back to the slower baseline. Mirrors the resolver's own
+    // active/idle design (see /Amplify_Live_Data docs/CONTRACT.md) so the
+    // two layers stay in the same spirit without being coupled.
+    function getAdaptivePollIntervalSeconds() {
+      var activeSeconds = SITE_CONFIG.liveActiveRefreshSeconds || 30;
+      var idleSeconds = SITE_CONFIG.liveRefreshSeconds || 120;
+      var community = communityController.lastPayload && communityController.lastPayload.community;
+      if (!community) return idleSeconds;
+      if (community.status === 'live') return activeSeconds;
+      if (community.status === 'upcoming' && community.scheduledStart) {
+        var untilStartMs = new Date(community.scheduledStart).getTime() - Date.now();
+        if (untilStartMs >= 0 && untilStartMs <= 30 * 60 * 1000) return activeSeconds;
+      }
+      return idleSeconds;
+    }
+
     function scheduleNextPoll() {
       clearTimeout(communityController.pollTimer);
       if (document.hidden) return; // resumed by the visibilitychange listener below
       communityController.pollTimer = setTimeout(function() {
         pollCommunityOnce().then(scheduleNextPoll);
-      }, (SITE_CONFIG.liveRefreshSeconds || 120) * 1000);
+      }, getAdaptivePollIntervalSeconds() * 1000);
     }
 
     document.addEventListener('visibilitychange', function() {
@@ -1895,7 +1940,7 @@
         clearTimeout(communityController.pollTimer);
         return;
       }
-      var intervalMs = (SITE_CONFIG.liveRefreshSeconds || 120) * 1000;
+      var intervalMs = getAdaptivePollIntervalSeconds() * 1000;
       var age = Date.now() - communityController.lastFetchAt;
       if (!communityController.lastFetchAt || age > intervalMs) {
         pollCommunityOnce().then(scheduleNextPoll);
