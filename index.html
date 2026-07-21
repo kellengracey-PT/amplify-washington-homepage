@@ -682,6 +682,10 @@
       padding: 1.25rem 1.5rem;
       margin-bottom: 2rem;
     }
+    /* [hidden] alone loses to the plain-class `display: flex` above (equal
+       specificity, later source order) -- see the same fix already applied
+       to .watch-live-now-banner/.recent-episodes-grid. */
+    .sports-banner[hidden] { display: none; }
     .sports-banner-icon { font-size: 1.75rem; line-height: 1; flex-shrink: 0; }
     .sports-banner p {
       font-family: var(--font-display);
@@ -702,6 +706,91 @@
       color: rgba(255,255,255,0.65);
       margin-top: 0.2rem;
     }
+
+    .watch-link-row[hidden] { display: none; }
+
+    /* Upcoming Amplify Coverage -- planned/confirmed schedule cards, never
+       a video player. Reuses the recent-episode-card visual language
+       (thumbnail-less variant) so it reads as part of the same system. */
+    .upcoming-coverage { margin: 2rem 0; }
+    .upcoming-coverage-heading {
+      font-family: var(--font-display);
+      color: #fff;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+    .upcoming-coverage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .upcoming-coverage-grid[hidden] { display: none; }
+    .coverage-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .coverage-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .coverage-card-sport {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: #fff;
+      font-size: 1rem;
+      text-transform: capitalize;
+    }
+    .coverage-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.7);
+      flex-shrink: 0;
+    }
+    .coverage-badge.is-confirmed {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+    .coverage-card-detail {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+    .coverage-card-time {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .coverage-card-watch {
+      align-self: flex-start;
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--orange-light);
+      text-decoration: none;
+    }
+    .coverage-card-watch:hover { text-decoration: underline; }
+    .upcoming-coverage-empty {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      font-style: italic;
+    }
+    .upcoming-coverage-empty[hidden] { display: none; }
 
     .archive-label-row {
       display: flex;
@@ -1160,32 +1249,75 @@
       </div>
     </section>
 
-    <!-- ── SPORTS ── -->
+    <!-- ── SPORTS: Washington Sports Livestream ── -->
     <section class="section section--dark" id="sports" aria-labelledby="sports-heading">
       <div class="container">
-        <p class="section-label">Demons Sports</p>
-        <h2 class="section-title" id="sports-heading">Washington Demons Sports Livestream</h2>
-        <p class="section-intro">
-          Live broadcasts and full replays of Washington Demons athletics, all in one place.
+        <p class="section-label">Washington Sports Livestream</p>
+        <h2 class="section-title" id="sports-heading">Washington Demons coverage</h2>
+        <p class="section-intro" id="sports-section-intro">
+          Washington Sports Livestream brings Washington Demons games online — live broadcasts and full replays, all in one place.
         </p>
 
-        <div class="sports-banner" role="status">
+        <div class="watch-status-row">
+          <span class="watch-status-badge" id="sports-status-badge">Washington Sports Livestream</span>
+          <span class="watch-status-meta" id="sports-status-meta" aria-live="polite"></span>
+        </div>
+
+        <!-- Shown only when the visitor has selected a sports replay and a
+             real broadcast goes live in the meantime. Never auto-interrupts
+             playback -- this is the only path back to live, and it's a
+             deliberate click. -->
+        <div class="watch-live-now-banner" id="sports-live-now-banner" role="status" hidden>
+          <p>A Demons broadcast just went live.</p>
+          <button type="button" id="sports-live-now-accept" class="btn btn-primary">Watch Live Now</button>
+        </div>
+
+        <!-- Intentional empty state before the 2026-27 season starts, or
+             whenever there's genuinely nothing to show. Hidden as soon as
+             any real live/upcoming/replay sports content is available. -->
+        <div class="sports-banner" id="sports-empty-banner" role="status">
           <span class="sports-banner-icon" aria-hidden="true">🏆</span>
-          <p>Live sports coverage begins September 2026
-            <span>Live games and replays will appear on this page once the season starts. Follow YouTube or Facebook for schedule announcements.</span>
+          <p id="sports-empty-heading">Washington Demons livestream coverage begins in September 2026
+            <span id="sports-empty-detail">Live games and replays will appear on this page once the season starts. Follow YouTube or Facebook for schedule announcements.</span>
           </p>
         </div>
 
-        <div class="video-wrap" id="sports-live-wrap" role="region" aria-label="Washington Demons sports livestream broadcast"></div>
-        <div class="watch-link-row">
+        <div class="video-wrap" id="sports-live-wrap" role="region" aria-label="Washington Sports Livestream broadcast" hidden>
+          <noscript>
+            <div class="video-placeholder">
+              <p>Enable JavaScript to watch here, or <a href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">watch on YouTube</a>.</p>
+            </div>
+          </noscript>
+        </div>
+
+        <!-- Shown only after the visitor manually selects a sports replay
+             below -- lets them get back to whatever is actually live/latest
+             without the page doing it for them. -->
+        <div class="watch-return-row" id="sports-return-row" hidden>
+          <button type="button" id="sports-return-to-live" class="watch-return-btn">&larr; Return to Sports Live &amp; Latest</button>
+        </div>
+
+        <p class="watch-freshness-note" id="sports-freshness-note" aria-live="polite" hidden></p>
+
+        <div class="watch-link-row" id="sports-live-link-row" hidden>
           <a class="yt-direct-link" id="sports-live-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Follow for schedule updates &rarr;</a>
         </div>
 
+        <!-- Upcoming Amplify Coverage: up to 5 planned/confirmed events from
+             the resolver's nextCoverage list. Never a video player -- cards
+             only ever link out to YouTube, and only when a real video is
+             already linked to that event. -->
+        <div class="upcoming-coverage" id="upcoming-coverage-section">
+          <h3 class="upcoming-coverage-heading">Upcoming Amplify Coverage</h3>
+          <div class="upcoming-coverage-grid" id="upcoming-coverage-grid" role="list" hidden></div>
+          <p class="upcoming-coverage-empty" id="upcoming-coverage-empty">No upcoming Demons coverage is confirmed yet. Follow YouTube or Facebook for schedule announcements.</p>
+        </div>
+
         <div class="archive-label-row">
-          <h3>Season Archive</h3>
+          <h3>Season archive</h3>
           <span class="archive-season-badge" id="sports-season-badge">2026&ndash;27 Season</span>
         </div>
-        <div class="video-wrap" id="sports-archive-wrap" role="region" aria-label="Washington Demons sports season archive"></div>
+        <div class="video-wrap" id="sports-archive-wrap" role="region" aria-label="Washington Sports Livestream season archive"></div>
         <div class="watch-link-row">
           <a class="yt-direct-link" id="sports-archive-link" href="https://www.youtube.com/@AmplifyWashington" target="_blank" rel="noopener">Open sports archive on YouTube &rarr;</a>
         </div>
@@ -1451,7 +1583,27 @@
       // just be extra browser/network overhead for no fresher data. Has no
       // effect while resolverUrl is blank.
       liveActiveRefreshSeconds: 600, // 10 minutes
-      liveRefreshSeconds: 3600 // 60 minutes
+      liveRefreshSeconds: 3600, // 60 minutes
+
+      // Sports polling mirrors community's hourly/10-min split, but the
+      // resolver's own sports refresh is coverage-schedule-driven (see
+      // /Amplify_Live_Data worker/scheduling.js) -- the client doesn't need
+      // to know about that 6h/12h server-side detail, it only ever reads
+      // cached Worker data, never YouTube directly. Same interval values
+      // and 60-minute imminent-event lookahead as community, kept as
+      // separate config keys so the two pollers can never accidentally
+      // share state.
+      sportsActiveRefreshSeconds: 600, // 10 minutes
+      sportsRefreshSeconds: 3600, // 60 minutes
+
+      // Seasonal presentation only -- labels and supporting copy, never
+      // used to invent or activate event data. See docs comment on
+      // getSportsAdaptivePollIntervalSeconds() for how nextCoverage (not
+      // this) drives actual content.
+      sportsSeasonConfig: {
+        season: "fall",
+        featuredSports: ["football", "volleyball"]
+      }
     };
 
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -1971,13 +2123,305 @@
 
     initCommunityLiveAndLatest();
 
-    // Sports live broadcast (unchanged in Phase 1 — Phase 2 will extend this)
-    mountVideo(
-      'sports-live-wrap', 'sports-live-link',
-      SITE_CONFIG.fallbackSportsVideoId, 'Washington Demons sports livestream broadcast', false,
-      SITE_CONFIG.sportsLaunchText + '. Live games and replays will appear here once the season starts.',
-      'Follow for Schedule Updates', SITE_CONFIG.sportsChannelUrl || SITE_CONFIG.youtubeChannelUrl
-    );
+    // ── Sports Live & Latest controller ──────────────────────────────────
+    // Entirely independent of communityController: its own state, its own
+    // poll timer, its own iframe. A community refresh never restarts the
+    // sports player, and vice versa. Mirrors communityController's proven
+    // pattern (same iframe-preservation and manual-selection rules) so the
+    // two modules can't drift into inconsistent behavior over time.
+    var sportsController = {
+      mountedVideoId: null,
+      hasMountedValidVideo: false,
+      userSelected: false,
+      lastPayload: null,
+      pollTimer: null,
+      requestSeq: 0,
+      inFlight: false,
+      lastFetchAt: 0
+    };
+
+    function statusChromeForSports(sports) {
+      var badge = document.getElementById('sports-status-badge');
+      var meta = document.getElementById('sports-status-meta');
+      if (!badge || !meta) return;
+      if (sports.status === 'live') {
+        setTextIfChanged(badge, 'Live Now');
+        badge.classList.add('is-live');
+        setTextIfChanged(meta, sports.actualStart ? 'Started ' + formatCentral(sports.actualStart) : '');
+      } else if (sports.status === 'upcoming') {
+        setTextIfChanged(badge, 'Next Broadcast');
+        badge.classList.remove('is-live');
+        var upcomingDate = deriveUpcomingDate(sports);
+        setTextIfChanged(meta, upcomingDate ? formatCentral(upcomingDate) : '');
+      } else if (sports.status === 'replay') {
+        setTextIfChanged(badge, 'Most Recent Replay');
+        badge.classList.remove('is-live');
+        var displayDate = deriveDisplayDate(sports);
+        setTextIfChanged(meta, displayDate ? formatCentral(displayDate) : '');
+      } else {
+        setTextIfChanged(badge, 'Washington Sports Livestream');
+        badge.classList.remove('is-live');
+        setTextIfChanged(meta, '');
+      }
+    }
+
+    function showSportsEmptyState(show) {
+      var banner = document.getElementById('sports-empty-banner');
+      var wrap = document.getElementById('sports-live-wrap');
+      var linkRow = document.getElementById('sports-live-link-row');
+      if (banner) banner.hidden = !show;
+      if (wrap) wrap.hidden = show;
+      if (linkRow) linkRow.hidden = show;
+    }
+
+    function showSportsLiveNowBanner(sports) {
+      var banner = document.getElementById('sports-live-now-banner');
+      if (!banner) return;
+      banner.hidden = false;
+      banner.pendingSports = sports;
+    }
+
+    function hideSportsLiveNowBanner() {
+      var banner = document.getElementById('sports-live-now-banner');
+      if (banner) { banner.hidden = true; banner.pendingSports = null; }
+    }
+
+    function showSportsReturnRow(show) {
+      var row = document.getElementById('sports-return-row');
+      if (row) row.hidden = !show;
+    }
+
+    function setSportsFreshnessNote(payload) {
+      var note = document.getElementById('sports-freshness-note');
+      if (!note) return;
+      if (payload && payload.isStale) {
+        setTextIfChanged(note, 'Showing the latest available sports information.');
+        note.hidden = false;
+      } else {
+        note.hidden = true;
+      }
+    }
+
+    function mountSportsPrimaryIframe(videoId, title) {
+      mountVideo('sports-live-wrap', 'sports-live-link', videoId, title, false, '', '', '');
+      sportsController.mountedVideoId = videoId;
+      sportsController.hasMountedValidVideo = true;
+      showSportsEmptyState(false);
+    }
+
+    function mountSportsUpcomingTreatment(sports) {
+      // Same rule as community: never embed a player for a broadcast that
+      // hasn't started yet.
+      var upcomingDate = deriveUpcomingDate(sports);
+      var linkUrl = sports.youtubeUrl || SITE_CONFIG.sportsChannelUrl || SITE_CONFIG.youtubeChannelUrl;
+      document.getElementById('sports-live-wrap').innerHTML = emptyStateHTML(
+        'The next Demons broadcast is scheduled for ' + (upcomingDate ? formatCentral(upcomingDate) : 'soon') + '.',
+        'Get Notified on YouTube', linkUrl
+      );
+      var link = document.getElementById('sports-live-link');
+      if (link) link.href = linkUrl;
+      sportsController.mountedVideoId = null;
+      sportsController.hasMountedValidVideo = true;
+      showSportsEmptyState(false);
+    }
+
+    function mountSportsPrimaryForStatus(sports) {
+      if (sports.status === 'upcoming') mountSportsUpcomingTreatment(sports);
+      else mountSportsPrimaryIframe(sports.videoId, sports.title || 'Washington Sports Livestream broadcast');
+    }
+
+    function formatCoverageMeta(event) {
+      var parts = [];
+      if (event.level) parts.push(event.level);
+      if (event.homeAway === 'home') parts.push('Home');
+      else if (event.homeAway === 'away') parts.push('Away');
+      else if (event.homeAway === 'neutral') parts.push('Neutral site');
+      return parts.join(' · ');
+    }
+
+    // Renders up to 5 planned/confirmed events from the resolver's
+    // nextCoverage list. Never creates a video player -- a card only ever
+    // links out to YouTube, and only when a real video is already linked.
+    function renderUpcomingCoverage(nextCoverage) {
+      var grid = document.getElementById('upcoming-coverage-grid');
+      var empty = document.getElementById('upcoming-coverage-empty');
+      if (!grid || !empty) return;
+      var events = (nextCoverage || []).slice(0, 5);
+      if (!events.length) {
+        grid.hidden = true;
+        grid.innerHTML = '';
+        empty.hidden = false;
+        return;
+      }
+      empty.hidden = true;
+      grid.hidden = false;
+      grid.innerHTML = events.map(function(event) {
+        var isConfirmed = event.coverageStatus === 'confirmed';
+        var badgeClass = isConfirmed ? 'coverage-badge is-confirmed' : 'coverage-badge';
+        var badgeLabel = isConfirmed ? 'Confirmed' : 'Planned';
+        var meta = formatCoverageMeta(event);
+        var opponent = event.opponent ? escapeAttr(event.opponent) : '';
+        var venue = event.venue ? escapeAttr(event.venue) : '';
+        var when = event.start ? formatCentral(event.start) : '';
+        var watchHref = event.youtubeVideoId ? ('https://youtu.be/' + encodeURIComponent(event.youtubeVideoId)) : '';
+        var opponentLine = opponent
+          ? '<p class="coverage-card-detail">' + (event.homeAway === 'away' ? 'at ' : 'vs. ') + opponent + '</p>'
+          : '';
+        var venueMetaLine = (venue || meta)
+          ? '<p class="coverage-card-detail">' + [venue, escapeAttr(meta)].filter(Boolean).join(' · ') + '</p>'
+          : '';
+        var whenLine = when ? '<p class="coverage-card-time">' + escapeAttr(when) + '</p>' : '';
+        var watchLine = watchHref ? '<a class="coverage-card-watch" href="' + escapeAttr(watchHref) + '" target="_blank" rel="noopener">Watch on YouTube &rarr;</a>' : '';
+        return '<div class="coverage-card" role="listitem">' +
+            '<div class="coverage-card-top">' +
+              '<span class="coverage-card-sport">' + escapeAttr(event.sport || '') + '</span>' +
+              '<span class="' + badgeClass + '">' + badgeLabel + '</span>' +
+            '</div>' +
+            opponentLine +
+            venueMetaLine +
+            whenLine +
+            watchLine +
+          '</div>';
+      }).join('');
+    }
+
+    // Applies one resolver payload (or null on a failed/skipped fetch) to
+    // the sports Live & Latest stage. Mirrors applyCommunityPayload's rules
+    // exactly, but reads/writes only sportsController and the sports-*
+    // elements -- never touches communityController or its DOM.
+    function applySportsPayload(payload) {
+      if (!payload) return;
+      sportsController.lastPayload = payload;
+      var sports = payload.sports;
+      renderUpcomingCoverage(payload.nextCoverage);
+
+      if (!sports || sports.status === 'unavailable') {
+        if (!sportsController.hasMountedValidVideo) showSportsEmptyState(true);
+        statusChromeForSports(sports || { status: 'unavailable' });
+        setSportsFreshnessNote(payload);
+        return;
+      }
+
+      var sameVideo = sports.videoId && sports.videoId === sportsController.mountedVideoId;
+
+      if (sameVideo) {
+        // Identical video: refresh labels/freshness only. The iframe is
+        // never touched, so playback, focus, and scroll position survive
+        // this poll untouched.
+        statusChromeForSports(sports);
+        setSportsFreshnessNote(payload);
+        return;
+      }
+
+      if (sportsController.userSelected) {
+        // The visitor is deliberately viewing a specific replay. Only a
+        // genuine new live broadcast interrupts that -- and only via an
+        // explicit "Watch Live Now" click, never automatically.
+        if (sports.status === 'live') showSportsLiveNowBanner(sports);
+        setSportsFreshnessNote(payload);
+        return;
+      }
+
+      mountSportsPrimaryForStatus(sports);
+      statusChromeForSports(sports);
+      hideSportsLiveNowBanner();
+      setSportsFreshnessNote(payload);
+    }
+
+    var sportsLiveNowAcceptBtn = document.getElementById('sports-live-now-accept');
+    if (sportsLiveNowAcceptBtn) {
+      sportsLiveNowAcceptBtn.addEventListener('click', function() {
+        var banner = document.getElementById('sports-live-now-banner');
+        var pending = (banner && banner.pendingSports) || (sportsController.lastPayload && sportsController.lastPayload.sports);
+        sportsController.userSelected = false;
+        hideSportsLiveNowBanner();
+        showSportsReturnRow(false);
+        if (pending) {
+          mountSportsPrimaryForStatus(pending);
+          statusChromeForSports(pending);
+        }
+      });
+    }
+
+    var sportsReturnBtn = document.getElementById('sports-return-to-live');
+    if (sportsReturnBtn) {
+      sportsReturnBtn.addEventListener('click', function() {
+        sportsController.userSelected = false;
+        showSportsReturnRow(false);
+        var current = sportsController.lastPayload && sportsController.lastPayload.sports;
+        if (current) {
+          mountSportsPrimaryForStatus(current);
+          statusChromeForSports(current);
+        }
+      });
+    }
+
+    // Adaptive cadence mirrors community's: poll faster (10 min) while
+    // something time-sensitive is happening for sports specifically (live,
+    // or an upcoming broadcast within the hour), otherwise the slower
+    // hourly baseline. Independent of community's own tier -- reads only
+    // sportsController.lastPayload, never communityController's.
+    function getSportsAdaptivePollIntervalSeconds() {
+      var activeSeconds = SITE_CONFIG.sportsActiveRefreshSeconds || 600;
+      var idleSeconds = SITE_CONFIG.sportsRefreshSeconds || 3600;
+      var sports = sportsController.lastPayload && sportsController.lastPayload.sports;
+      if (!sports) return idleSeconds;
+      if (sports.status === 'live') return activeSeconds;
+      if (sports.status === 'upcoming' && sports.scheduledStart) {
+        var untilStartMs = new Date(sports.scheduledStart).getTime() - Date.now();
+        if (untilStartMs >= 0 && untilStartMs <= 60 * 60 * 1000) return activeSeconds;
+      }
+      return idleSeconds;
+    }
+
+    function pollSportsOnce() {
+      if (sportsController.inFlight) return Promise.resolve();
+      sportsController.inFlight = true;
+      var mySeq = ++sportsController.requestSeq;
+      var resolverPromise = SITE_CONFIG.resolverUrl
+        ? fetchResolverData(SITE_CONFIG.resolverUrl, 4000)
+        : Promise.resolve(null);
+
+      return resolverPromise.then(function(data) {
+        sportsController.inFlight = false;
+        if (mySeq !== sportsController.requestSeq) return; // superseded — ignore this obsolete response
+        sportsController.lastFetchAt = Date.now();
+        applySportsPayload(data);
+      });
+    }
+
+    function scheduleNextSportsPoll() {
+      clearTimeout(sportsController.pollTimer);
+      if (document.hidden) return; // resumed by the visibilitychange listener below
+      sportsController.pollTimer = setTimeout(function() {
+        pollSportsOnce().then(scheduleNextSportsPoll);
+      }, getSportsAdaptivePollIntervalSeconds() * 1000);
+    }
+
+    document.addEventListener('visibilitychange', function() {
+      if (!SITE_CONFIG.resolverUrl) return;
+      if (document.hidden) {
+        clearTimeout(sportsController.pollTimer);
+        return;
+      }
+      var intervalMs = getSportsAdaptivePollIntervalSeconds() * 1000;
+      var age = Date.now() - sportsController.lastFetchAt;
+      if (!sportsController.lastFetchAt || age > intervalMs) {
+        pollSportsOnce().then(scheduleNextSportsPoll);
+      } else {
+        scheduleNextSportsPoll();
+      }
+    });
+
+    function initSportsLiveAndLatest() {
+      // Intentional empty state until the resolver reports real content.
+      showSportsEmptyState(true);
+      pollSportsOnce().then(function() {
+        if (SITE_CONFIG.resolverUrl && SITE_CONFIG.sportsRefreshSeconds) scheduleNextSportsPoll();
+      });
+    }
+
+    initSportsLiveAndLatest();
 
     // Sports season archive playlist
     document.getElementById('sports-season-badge').textContent = SITE_CONFIG.sportsSeasonLabel;
