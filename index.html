@@ -1444,10 +1444,14 @@
 
       // How often (seconds) to re-poll the resolver. Adaptive: the shorter
       // interval applies while the community show is live, or upcoming
-      // within 30 minutes; the longer one applies otherwise. Has no effect
-      // while resolverUrl is blank.
-      liveActiveRefreshSeconds: 30,
-      liveRefreshSeconds: 120
+      // within the hour; the longer (normal) interval applies otherwise.
+      // Matches the resolver's own community cadence (see
+      // /Amplify_Live_Data worker/scheduling.js) so the two layers can't
+      // drift apart -- polling faster than the resolver refreshes would
+      // just be extra browser/network overhead for no fresher data. Has no
+      // effect while resolverUrl is blank.
+      liveActiveRefreshSeconds: 600, // 10 minutes
+      liveRefreshSeconds: 3600 // 60 minutes
     };
 
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -1914,14 +1918,14 @@
     // active/idle design (see /Amplify_Live_Data docs/CONTRACT.md) so the
     // two layers stay in the same spirit without being coupled.
     function getAdaptivePollIntervalSeconds() {
-      var activeSeconds = SITE_CONFIG.liveActiveRefreshSeconds || 30;
-      var idleSeconds = SITE_CONFIG.liveRefreshSeconds || 120;
+      var activeSeconds = SITE_CONFIG.liveActiveRefreshSeconds || 600;
+      var idleSeconds = SITE_CONFIG.liveRefreshSeconds || 3600;
       var community = communityController.lastPayload && communityController.lastPayload.community;
       if (!community) return idleSeconds;
       if (community.status === 'live') return activeSeconds;
       if (community.status === 'upcoming' && community.scheduledStart) {
         var untilStartMs = new Date(community.scheduledStart).getTime() - Date.now();
-        if (untilStartMs >= 0 && untilStartMs <= 30 * 60 * 1000) return activeSeconds;
+        if (untilStartMs >= 0 && untilStartMs <= 60 * 60 * 1000) return activeSeconds;
       }
       return idleSeconds;
     }
